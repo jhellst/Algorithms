@@ -36,3 +36,20 @@ class Solution:
 
 # Time Complexity: O(n) -> One pass of the range of n.
 # Space Complexity: O(n) -> Store every number once in a new array (res).
+
+
+
+# Optimal Solution For Space Complexity - Revisit
+class Solution:
+    def shuffle(self, nums: List[int], n: int) -> List[int]:
+        def swap(i, j):
+            while i < j:
+                nums[i], nums[i+1] = nums[i+1], nums[i]
+                i += 2
+
+        for i in range(n-1):
+            swap(n-1-i, n+i)
+        return nums
+
+# Time Complexity: O(n) -> One pass of the range of n.
+# Space Complexity: O(1) -> No additional memory used.
