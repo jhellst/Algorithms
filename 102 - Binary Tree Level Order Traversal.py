@@ -30,26 +30,28 @@
 #         self.right = right
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        # BFS-style traversal of binary tree.
-        # Want to traverse, level-by-level, and append each complete level to res.
-
-        res = []
+        # Traverse each level (BFS) and append the level to res array.
 
         q = deque()
         q.append(root)
 
-        while q:
-            qLen = len(q) # Take the length of the current level.
-            curLevel = []
-            for i in range(qLen): # Pop each node on the current level.
-                cur = q.popleft()
-                if cur:
-                    curLevel.append(cur.val)
-                    q.append(cur.left)
-                    q.append(cur.right)
+        res = []
 
-            if curLevel: # Only append to res if values are included.
-                res.append(curLevel)
+        # print(q)
+
+        while q:
+            qLen = len(q) # Take the length of the queue at the beginning of each new level.
+            level = [] # Stores the values for nodes visited on the current level.
+
+            for i in range(qLen): # Pop each node on the current level.
+                curNode = q.popleft()
+                if curNode:
+                    level.append(curNode.val)
+                    q.append(curNode.left)
+                    q.append(curNode.right)
+
+            if level: # Do not append level if it is an empty array.
+                res.append(level)
 
         return res
 
