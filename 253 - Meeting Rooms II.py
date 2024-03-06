@@ -19,6 +19,8 @@ import heapq
 # 0 <= starti < endi <= 106
 
 
+# Solution #1: Using heap
+
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
 
@@ -52,3 +54,25 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> Sorting is O(n * log(n)) -> Heap is O(n * log(n))
 # Space Complexity: O(n) -> Heap can contain every end value in intervals array.
+
+
+# Solution #2: Using sort.
+
+class Solution:
+    def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+        # Need to determine if any meetings overlap. If they do, return False. Otherwise, return true.
+
+        # First, sort intervals.
+
+        intervals.sort()
+
+        prevEnd = 0
+        for start, end in intervals:
+            if start < prevEnd:
+                return False
+            prevEnd = end
+
+        return True
+
+# Time Complexity: O(n * log(n)) -> Sorting is O(n * log(n))
+# Space Complexity: O(1) -> No additional storage used.
