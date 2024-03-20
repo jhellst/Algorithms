@@ -29,27 +29,29 @@ import math
 
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        # Binary search, but want to have mid be the rate of bananas eaten.
+        # Koko can eat k bananas from each pile (in any given scenario where rate is k).
+        # Binary search of the RATE of bananas eaten. We rate will be between 1 and max(piles).
 
-        l, r = 1, max(piles)
-        res = r
+        left, right = 1, max(piles)
+        res = right # Right is max possible rate and is valid.
 
-        while l <= r:
-            k = (l + r) // 2
+        while left <= right:
+            mid = (left + right) // 2
 
-            timeTaken = 0
-            for p in piles:
-                timeTaken += math.ceil(p / k)
+            # Now, we process Koko's eating process to see how long it takes.
+            hoursTaken = 0
+            for pile in piles: # How many hours taken by Koko to eat EACH pile?
+                hoursTaken += math.ceil(pile / mid)
 
-            if timeTaken <= h:
-                # Valid option, meaning that we can continue to search for lower rates. Set current k as res for current time.
-                res = k
-                r = k - 1
+            if hoursTaken <= h: # Valid answer. Continue searching lower rates for valid answers.
+                res = mid
+                right = mid - 1
             else:
-                # Not a valid option, need to search for lower rate.
-                l = k + 1
+                left = mid + 1
 
         return res
 
 
-# Time Complexity: O(log(n)) -> Single binary search of an array.
+
+# Time Complexity: O( n * log(m) ) -> Binary search (O(log(m))) of rates from 1 to m. For each binary search, need to traverse entire piles array ( O(n) ) to calculate timeTaken.
+# Space Complexity: O(1) -> No additional storage used (Besides hoursTaken varible ( O(1)) ).
