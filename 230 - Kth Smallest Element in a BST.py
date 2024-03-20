@@ -26,27 +26,31 @@
 #         self.right = right
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        # Want to find the kth smallest value in the entire tree.
-        # Tree is a binary tree, so it is already ordered if we traverse properly (DFS).
+        # BST, so it can be searched DFS-style and find the Kth element starting from the smallest.
+        # At each node, want to process the subtree's nodes by first going to the smallest element (all the way to the left subtree).
 
         stack = []
         curNode = root
-        res = []
+        count = 0
 
         while stack or curNode:
-            while curNode: # First, add all nodes going down to the left.
+            while curNode:
+                # First phase -> add left leaves, all the way down to bottom row of BST.
                 stack.append(curNode)
-                curNode = curNode.left # New curNode is curNode.left (if it exists).
-            # Now, done traversing down to the left. Lowest value in tree popped from stack.
-            curNode = stack.pop()
-            res.append(curNode.val) # Append value to res.
-            curNode = curNode.right # Traverse to the right from curNode, if possible.
+                curNode = curNode.left
 
-        return res[k - 1]
+            print([l.val for l in stack])
+
+            # We added all possible left subtrees. Current node will NOT need to have its left node added again.
+            curNode = stack.pop() # Bottom leaf, currently. Pop it and process into right subtree. Increment k as needed.
+            count += 1
+            if count == k:
+                return curNode.val
+
+            curNode = curNode.right # Go to right subtree now, if it exists.
 
 # Time Complexity: O(n) -> Single Traversal of tree
 # Space Complexity: O(n) -> Single Traversal of tree
 
 
 # Follow up: If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?
-
