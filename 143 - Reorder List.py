@@ -67,5 +67,6 @@ class Solution:
             first.next, second = second, tmp1
             first = first.next
 
+
 # Time Complexity: O(n) -> Traverse list to split (O(n)), and Traverse split lists to link (O(n)).
 # Space Complexity: O(n) -> No additional storage.
