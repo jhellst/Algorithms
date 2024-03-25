@@ -33,42 +33,41 @@
 
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        # Grid cells are 1) empty, 2) fresh orange, or 3) rotten orange.
-        # We want to see how long it takes for every orange to be rotten. Every rotten orange "spreads" the rot to all adjacent fresh oranges each turn.
-
-        # BFS-style solution: We want to rot the oranges, second by second.
-        # For each rotten orange, we want to BFS the surrounding oranges to rot them.
+        # BFS of each orange that is rotten in the grid. We want to see how many minutes it takes to reach every orange.
 
         q = deque()
-        timeTaken = 0
-        orangeCount = 0
+        count = 0
 
-        # First, traverse the grid and find every rotten orange to start.
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == 2:
-                    q.append((r, c))
+                    q.append((r + 1, c))
+                    q.append((r - 1, c))
+                    q.append((r, c + 1))
+                    q.append((r, c - 1))
                 if grid[r][c] == 1:
-                    orangeCount += 1
+                    count += 1
 
-        if orangeCount == 0:
-            return timeTaken
+        if count == 0:
+            return 0
 
-        # Now, we can run BFS on each rotten orange. Each time we deplete the queue, increment time by 1.
+        # Now, we know the count of fresh oranges, and the location of each rotten orange (on stack). BFS the rotten oranges on the stack.
+        timeTaken = 0
         while q:
+            qLength = len(q)
             timeTaken += 1
-            qLen = len(q)
-            for i in range(qLen):
-                curX, curY = q.popleft() # Now we want to add all adjacent fresh oranges to queue.
+            for i in range(qLength):
+                curRow, curCol = q.popleft()
+                if 0 <= curRow < len(grid) and 0 <= curCol < len(grid[0]) and grid[curRow][curCol] == 1: # Fresh orange, ready to make rot.
+                    count -= 1
+                    grid[curRow][curCol] = 2
+                    q.append((curRow + 1, curCol))
+                    q.append((curRow - 1, curCol))
+                    q.append((curRow, curCol + 1))
+                    q.append((curRow, curCol - 1))
+            if count == 0:
+                return timeTaken
 
-                candidates = [(curX + 1, curY), (curX - 1, curY), (curX, curY + 1), (curX, curY - 1)] # Adjacent cells
-                for x, y in candidates:
-                    if x >= 0 and y >= 0 and x < len(grid) and y < len(grid[0]) and grid[x][y] == 1: # Valid cell is 1) in range and 2) contains a fresh orange.
-                        grid[x][y] = 2
-                        orangeCount -= 1
-                        q.append((x, y))
-                        if orangeCount == 0:
-                            return timeTaken
 
         return -1
 
