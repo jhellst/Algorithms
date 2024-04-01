@@ -49,5 +49,6 @@ class Solution:
 
         return len(stack) == 0
 
+
 # Time Complexity: O(n) -> Traverse string, visiting each char once.
 # Space Complexity: O(n) -> Store up to every character on the stack.
