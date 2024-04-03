@@ -38,6 +38,7 @@
 
 
 class MinStack:
+    # Use a stack to store values. Also, use a stack to store minValues.
 
     def __init__(self):
         self.stack = []
@@ -45,12 +46,14 @@ class MinStack:
 
     def push(self, val: int) -> None:
         self.stack.append(val)
+
         if not self.min or self.min[-1] >= val:
             self.min.append(val)
 
     def pop(self) -> None:
-        curVal = self.stack.pop()
-        if self.min[-1] == curVal:
+        removed = self.stack.pop()
+
+        if self.min[-1] == removed:
             self.min.pop()
 
     def top(self) -> int:
