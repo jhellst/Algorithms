@@ -31,20 +31,18 @@
 
 class Solution:
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
-        # Sorted array. Want to search for 2 numbers in the array that add up to target.
-        # Use 2-pointers, starting from start and end of numbers array.
-        # Solution is guaranteed to exist.
+        # Array is already sorted, so we can search using 2 pointers.
+        # Converge on target.
+        # Note that array is 1-indexed, so add 1 to each value in return array.
 
         left, right = 0, len(numbers) - 1
-
-        while True:
+        while left < right:
             curSum = numbers[left] + numbers[right]
-
             if curSum == target:
                 return [left + 1, right + 1]
-            elif curSum > target:
+            elif curSum > target: # Sum too high -> increment down from right side to reduce sum.
                 right -= 1
-            elif curSum < target:
+            else:
                 left += 1
 
 # Time Complexity: O(n) -> Single pass with 2 pointers.
