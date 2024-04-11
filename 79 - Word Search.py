@@ -28,29 +28,30 @@
 
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
+        # DFS of the board. Want to return true if the word can ever be constructed from adjacent, non-repeating cells.
 
-        # DFS of the grid.
-        def dfs(r, c, i, seen):
-            if i == len(word):
+        rows, cols = len(board), len(board[0])
+        seen = set()
+
+        def dfs(row, col, index):
+            if index >= len(word): # End of word.
                 return True
-            if r < 0 or c < 0 or r >= len(board) or c >= len(board[0]) or board[r][c] != word[i]:
-                return False
-            if (r, c) in seen:
+            elif row < 0 or col < 0 or row >= rows or col >= cols or (row, col) in seen or board[row][col] != word[index]: # Cell not in range, visited, or not a match.
                 return False
 
-
-            seen.add((r, c))
-            res = dfs(r + 1, c, i + 1, seen) or dfs(r - 1, c, i + 1, seen) or dfs(r, c + 1, i + 1, seen) or dfs(r, c - 1, i + 1, seen)
-            seen.remove((r, c))
+            # In all other cases, the cell contains the correct value.
+            seen.add((row, col))
+            res = dfs(row + 1, col, index + 1) or dfs(row - 1, col, index + 1) or dfs(row, col + 1, index + 1) or dfs(row, col - 1, index + 1)
+            seen.remove((row, col))
             return res
 
-
-        seen = set() # Visited cells.
-
-        for r in range(len(board)):
-            for c in range(len(board[0])):
-                    if dfs(r, c, 0, seen):
-                        return True
-
+        for r in range(rows):
+            for c in range(cols):
+                wordFound = dfs(r, c, 0)
+                if wordFound:
+                    return True
 
         return False
+
+# Time Complexity: O(m * n * dfs) -> O(m * n * 4^w) -> Traverse all rows and cols, then dfs in 4 directions at each point. (w is len(word))
+# Space Complexity: O(n) -> Store up to each cell once in set.
