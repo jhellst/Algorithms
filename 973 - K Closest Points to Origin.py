@@ -28,17 +28,21 @@ import heapq
 
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        # Use a heap or sorting to store each point with its distance to origin.
 
         maxHeap = []
 
         for x, y in points:
-            distance = -sqrt((x)**2 + (y)**2)
+            distance = sqrt(x**2 + y**2)
 
-            heapq.heappush(maxHeap, [distance, [x, y]]) # Push an array with 2 things: distance and the point itself.
-            while len(maxHeap) > k:
+            # Push to maxHeap.
+            heapq.heappush(maxHeap, [-distance, [x, y]])
+
+            # Pop from maxHeap if longer than k.
+            if len(maxHeap) > k:
                 heapq.heappop(maxHeap)
 
-        return [points for distance, points in maxHeap]
+        return [elem[1] for elem in maxHeap]
 
 # Time Complexity: O(n * log(k)) -> Heap is max size of k, and we push every point onto the heap.
 # Space Complexity: O(n) -> Store each value in the array once.
