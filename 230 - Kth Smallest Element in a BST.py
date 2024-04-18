@@ -49,8 +49,8 @@ class Solution:
 
             curNode = curNode.right # Go to right subtree now, if it exists.
 
-# Time Complexity: O(n) -> Single Traversal of tree
-# Space Complexity: O(n) -> Single Traversal of tree
+# Time Complexity: O(n) -> Visit every node in tree, in worst case.
+# Space Complexity: O(n) -> Store up to one call on stack for every node in tree (in worst case).
 
 
 # Follow up: If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?
