@@ -30,30 +30,26 @@
 #         self.right = right
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        # Traverse each level (BFS) and append the level to res array.
+        # Level-order traversal of tree. Use deque to traverse and append each level.
 
+        res = []
         q = deque()
         q.append(root)
 
-        res = []
-
-        # print(q)
-
         while q:
-            qLen = len(q) # Take the length of the queue at the beginning of each new level.
-            level = [] # Stores the values for nodes visited on the current level.
-
-            for i in range(qLen): # Pop each node on the current level.
+            qLen = len(q)
+            curLevel = []
+            for i in range(qLen):
                 curNode = q.popleft()
                 if curNode:
-                    level.append(curNode.val)
+                    curLevel.append(curNode.val)
                     q.append(curNode.left)
                     q.append(curNode.right)
 
-            if level: # Do not append level if it is an empty array.
-                res.append(level)
+            if curLevel:
+                res.append(curLevel)
 
         return res
 
-# Time Complexity: O(n) -> Traversal of every node in the tree 1 time.
-# Space Complexity: O(n) -> Store every node in the tree 1 time.
+# Time Complexity: O(n) -> Visit every node in the tree exactly 1 time.
+# Space Complexity: O(w) -> O(n) -> Store up to w nodes on the stack, where w is the width of any given level of the tree.
