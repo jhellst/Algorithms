@@ -27,27 +27,21 @@
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        # Sliding-window style problem.
-        # We want to start at index 0, expanding the window until we hit a repeating character. Shrink window from left in that case.
-        # Use a set to store characters in the current substring.
+        # Use 2 pointers to traverse the string, while using a hashmap to store character counts.
 
-        left = 0
-        right = 0
-        chars = set()
+        hashmap = {}
         res = 0
+        left = 0
 
-        # Here, we want to slide the window wider as long as we can. If we can't, reduce from the left side.
-        while right < len(s):
-            if s[right] in chars: # Here we have s[right] in the substring. Reduce from the left.
-                chars.remove(s[left])
+        for r in range(len(s)):
+            hashmap[s[r]] = hashmap.get(s[r], 0) + 1
+
+            while hashmap[s[r]] > 1 and left < r:
+                hashmap[s[left]] -= 1
                 left += 1
-            else:
-                res = max(res, right - left + 1)
-                chars.add(s[right])
-                right += 1
+            res = max(res, r - left + 1)
 
         return res
 
-
-# Time Complexity: Single Pass -> O(n)
-# Space Complexity: Worst case -> store every value in set one time -> O(n)
+# Time Complexity: O(n) -> Single pass of array with 2 pointers.
+# Space Complexity: O(m) -> Store up to every unique char in hashmap (represented by m).
