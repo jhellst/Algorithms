@@ -25,23 +25,22 @@
 
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        # Intervals are already sorted. Need to add/merge the newInterval correctly.
+        # Process the intervals as we traverse the array.
+        # When there is overlap with newInterval, use different logic to "process" the interval.
 
         res = []
-        newStart, newEnd = newInterval
 
-        for start, end in intervals:
-            if newStart > end: # newInterval comes after, no overlap.
-                res.append([start, end])
-            elif newEnd < start: # newInterval comes before, no overlap.
-                res.append([newStart, newEnd])
-                newStart, newEnd = start, end
-            else: # Interval overlaps.
-                newStart, newEnd = min(newStart, start), max(newEnd, end)
+        for interval in intervals:
+            if newInterval[0] > interval[1]: # newInterval does not overlap and comes later.
+                res.append(interval)
+            elif newInterval[1] < interval[0]: # newInterval does not overlap and comes before.
+                res.append(newInterval)
+                newInterval = interval
+            else: # Some overlap.
+                newInterval = [min(interval[0], newInterval[0]), max(interval[1], newInterval[1])]
 
-        res.append([newStart, newEnd])
-
+        res.append(newInterval) # Append final interval to res.
         return res
 
-# Space Complexity: O(n) -> Single pass of intervals array.
-# Time Complexity: O(1) -> No additional storage.
+# Time Complexity: O(n) -> Traverse every interval exactly 1 time.
+# Space Complexity: O(1) -> No additional storage used.
