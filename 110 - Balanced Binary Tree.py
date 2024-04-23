@@ -30,16 +30,19 @@
 #         self.right = right
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        # DFS. Need to return the height of the subtree, but also to return a boolean to determine if there is balance within the subtrees themselves.
+        # Recursive DFS -> Need to return height of total subtree AND if the subtree is completely balanced internally.
 
         def dfs(node):
             if not node:
                 return [True, 0]
 
-            left = dfs(node.left)
-            right = dfs(node.right)
-            balance = abs(left[1] - right[1]) <= 1 and left[0] and right[0]
+            leftBalance, leftHeight = dfs(node.left)
+            rightBalance, rightHeight = dfs(node.right)
 
-            return [balance, max(left[1], right[1]) + 1]
+            balance = leftBalance and rightBalance and abs(leftHeight - rightHeight) <= 1
+            return [balance, max(leftHeight, rightHeight) + 1]
 
         return dfs(root)[0]
+
+# Time Complexity: O(n) -> Visit every node in the tree once.
+# Space Complexity: O(h) -> O(n) -> Stack can contain 1 call for every level in tree, which is every node in worst case.
