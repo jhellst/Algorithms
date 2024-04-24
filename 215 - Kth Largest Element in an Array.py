@@ -34,3 +34,22 @@ class Solution:
 
 # Time Complexity: O(log(n)) -> Heap operations are log(n).
 # Space Complexity: O(1) -> No additional storage needed.
+
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # Solution using a minHeap.
+        # As we add numbers, we only want to keep the k largest values in the heap. kth largest number will be on top of heap after operations are complete.
+
+        minHeap = []
+        for num in nums:
+            heapq.heappush(minHeap, num)
+
+            if len(minHeap) > k:
+                heapq.heappop(minHeap)
+
+        return minHeap[0]
+
+# Time Complexity: O(n * log(k)) -> For each num in nums, perform heap operations on heap of size k.
+# Space Complexity: O(k) -> Store up to k items on the heap.
