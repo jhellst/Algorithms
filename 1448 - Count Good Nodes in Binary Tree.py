@@ -55,4 +55,29 @@ class Solution:
         return res
 
 # Time Complexity: O(n) -> Visit each node one time.
-# Space Complexity: O(log(n)) -> Binary tree, so stack will contain all nodes of final level of tree (at worst).
+# Space Complexity: O(n)
+
+
+# Recursive Solution:
+
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        # Recursive solution. "Good" nodes are nodes that are >= to all parent nodes.
+
+        self.res = 0
+
+        def dfs(node, maxVal):
+            if not node:
+                return
+            if node.val >= maxVal: # Node.val is valid in chain
+                self.res += 1
+
+            dfs(node.left, max(maxVal, node.val))
+            dfs(node.right, max(maxVal, node.val))
+
+
+        dfs(root, root.val)
+        return self.res
+
+# Time Complexity: O(n) -> Visit every node in the tree once.
+# Space Complexity: O(h) -> O(n) -> Store up to h items on call stack, where h is the height of the tree. In worst case, n = h.
