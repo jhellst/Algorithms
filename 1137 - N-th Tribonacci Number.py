@@ -30,9 +30,7 @@ class Solution:
         for i in range(3, n + 1):
             print(i, dp)
 
-            if i in dp:
-                three = dp[i]
-            else:
+            if i not in dp:
                 dp[i] = dp[i - 3] + dp[i - 2] + dp[i - 1]
 
         return dp[n]
