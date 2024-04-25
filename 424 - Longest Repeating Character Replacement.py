@@ -37,3 +37,31 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse each cell once.
 # Space Complexity: O(n) -> Store up to each character once, assuming all characters in string are unqiue.
+
+
+# Optimal Solution.
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        # Sliding window. Use a hashmap to store the character counts. Expand to right, and decrement from left whenever the substring isn't valid.
+
+        hashmap = {} # Used to store character counts of current window/substring.
+        res = 0
+        maxCount = 0
+
+        left = 0
+        for right in range(len(s)):
+            hashmap[s[right]] = hashmap.get(s[right], 0) + 1
+            maxCount = max(maxCount, hashmap[s[right]]) # Recalculate maxCount.
+
+            # Check for validity.
+            while right - left + 1 - maxCount > k:
+                hashmap[s[left]] -= 1
+                left += 1
+
+            # Now, substring is valid and can be compared against res.
+            res = max(res, right - left + 1)
+
+        return res
+
+# Time Complexity: O(n) -> Pass over array once with sliding window.
+# Space Complexity: O(n) -> Store each char in hashmap, which is n in worst case.
