@@ -33,27 +33,21 @@
 #         self.next = next
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        # Want to remove nth node from the end of the list. We can achieve this by setting slow and fast pointers.
-        # Have the fast pointer move n # of nodes from the beginning before the slow pointer. When fast pointer reaches the end, slow pointer will be just before the node to be removed. Remove the node by making node.next => node.next.next instead.
+        # Use slow and fast pointers to track nodes. Space the pointers out by n+1 nodes. When fast pointer reaches end, slow pointer is right before node to be removed.
 
         dummy = ListNode(0, head)
-        slow = dummy
-        fast = head
+        slow, fast = dummy, head
 
         for i in range(n):
             fast = fast.next
-
-        # Now, fast is n nodes ahead of slow.
 
         while fast:
             slow = slow.next
             fast = fast.next
 
-        # Now slow.next is the node that will be skipped.
+        # Here, slow.next is the node that needs to be removed.
         slow.next = slow.next.next
-
         return dummy.next
 
-
-# Time Complexity O(n) -> Single pass
-# Space Complexity O(1) -> No additional storage used
+# Time Complexity: O(n) -> Single pass of the array with both pointers.
+# Space Complexity: O(1) -> No additional storage.
