@@ -30,32 +30,39 @@
 
 class Node:
     def __init__(self, key, val):
-        self.key, self.val = key, val
+        self.key = key
+        self.val = val
         self.prev = None
         self.next = None
 
 class LRUCache:
-# Use a doubly-linked list to enable O(1) lookup. Use a hashmap to store key:node to allow to immediate retrieval of nodes.
+    # Use a doubly-linked list to enable O(1) "get" and "put" operations.
+    # Combine with a hashmap storing key:node to optimize lookup.
 
     def __init__(self, capacity: int):
         self.capacity = capacity
         self.cache = {} # key:node
+
         self.left, self.right = Node(0, 0), Node(0, 0)
         self.left.next, self.right.prev = self.right, self.left
 
     # Helper functions to add/remove a node.
-    def insert(self, node):
+    def insert(self, node): # Adds a node to the list as the MRU.
         prev = self.right.prev
         prev.next = node
-        node.prev = prev
         node.next = self.right
         self.right.prev = node
+        node.prev = prev
 
-    def remove(self, node):
-        prev, nxt = node.prev, node.next
-        prev.next, nxt.prev = nxt, prev
+    def remove(self, node): # Removes a node.
+        prev = node.prev
+        nxt = node.next
+        prev.next = nxt
+        nxt.prev = prev
+
 
     def get(self, key: int) -> int:
+        # Retrieve the node if it exists. Make this node the MRU.
         if key in self.cache:
             self.remove(self.cache[key])
             self.insert(self.cache[key])
@@ -63,8 +70,9 @@ class LRUCache:
         else:
             return -1
 
-
     def put(self, key: int, value: int) -> None:
+        # Add a new key:value pair. If that key has already been stored, need to add then remove the node and modify the cache.
+
         if key in self.cache:
             self.remove(self.cache[key])
 
@@ -72,10 +80,14 @@ class LRUCache:
         self.insert(newNode)
         self.cache[key] = newNode
 
+        # Now, if capacity is exceeded -> remove LRU (the node immediately to the right of self.left).
         if len(self.cache) > self.capacity:
             lru = self.left.next
             self.remove(lru)
             del self.cache[lru.key]
+
+# Time Complexity: O(1) -> Lookup in hashmap is O(1). Insert/Remove is also O(1).
+# Space Complexity: O(capacity) -> Store nodes in hashmap and linked list up to capacity.
 
 
 # Your LRUCache object will be instantiated and called as such:
