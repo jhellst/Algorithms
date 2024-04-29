@@ -46,5 +46,5 @@ class Solution:
 
         return res
 
-# Time Complexity: O(n * m) -> Traverse grid and visit every cell 1 time.
-# Space Complexity: O(1) -> No additional storage used.
+# Time Complexity: O(m * n) -> Traverse the entire grid, visiting each cell once.
+# Space Complexity: O(L) -> L is size of largest island -> call stack may contain up to L calls for each cell in island.
