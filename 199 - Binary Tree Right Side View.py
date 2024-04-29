@@ -20,6 +20,8 @@
 # The number of nodes in the tree is in the range [0, 100].
 # -100 <= Node.val <= 100
 
+
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -28,17 +30,19 @@
 #         self.right = right
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        # We want to see the output of ONLY the right side of the tree. For this reason, we want to take a level-order traversal of the tree.
-        # Ensure that the current level is stored -> at end of level, take final number as the "Right Side" view.
+        # Output should contain the far right value of each level, when traversing level-by-level.
+        # Use a BFS-style traversal while tracking the # of nodes in each level. At the end of each level, append the final value in that level's array.
+
+        res = []
 
         q = deque()
         q.append(root)
-        res = []
 
         while q:
             qLen = len(q)
             curLevel = []
-            for i in range(qLen):
+
+            for _ in range(qLen):
                 curNode = q.popleft()
                 if curNode:
                     curLevel.append(curNode.val)
@@ -46,11 +50,9 @@ class Solution:
                     q.append(curNode.right)
 
             if curLevel:
-                print(curLevel)
-                rightVal = curLevel[-1]
-                res.append(rightVal)
+                res.append(curLevel[-1])
 
         return res
 
-# TIme Complexity: O(n) -> Visit every node in the tree one time.
-# Space Complexity: O(d) -> Stack will store, at worst, every node in the final level of the tree. d -> diameter of tree
+# Time Complexity: O(n) -> Visit every node exactly 1 time.
+# Space Complexity: O(w) -> curLevel array used to store each node on a current level.
