@@ -39,8 +39,6 @@ class Solution:
                 stack.append(curNode)
                 curNode = curNode.left
 
-            print([l.val for l in stack])
-
             # We added all possible left subtrees. Current node will NOT need to have its left node added again.
             curNode = stack.pop() # Bottom leaf, currently. Pop it and process into right subtree. Increment k as needed.
             count += 1
