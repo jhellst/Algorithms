@@ -91,3 +91,56 @@ class WordDictionary:
 # word in search consist of '.' or lowercase English letters.
 # There will be at most 2 dots in word for search queries.
 # At most 104 calls will be made to addWord and search.
+
+
+
+
+# 2nd solution:
+
+class WordDictionary:
+    # Use a Trie data structure. Will construct words in the trie, level-by-level (char-by-char).
+
+    def __init__(self):
+        self.trie = {}
+
+    def addWord(self, word: str) -> None:
+        trieLevel = self.trie
+
+        for char in word:
+            if char not in trieLevel:
+                trieLevel[char] = {}
+            trieLevel = trieLevel[char]
+        trieLevel["*"] = {}
+
+    def search(self, word: str) -> bool:
+        # Searches the trie for a word. Word can contain "." chars which are wildcards.
+        # Recursive definition is simple to implement here.
+
+        def dfs(word, index, trieLevel):
+            if index == len(word):
+                if "*" in trieLevel:
+                    return True
+                else:
+                    return False
+
+            if word[index] == ".":
+                for char in trieLevel:
+                    if dfs(word, index + 1, trieLevel[char]):
+                        return True
+                return False
+            elif word[index] not in trieLevel:
+                return False
+            else:
+                return dfs(word, index + 1, trieLevel[word[index]])
+
+        return dfs(word, 0, self.trie)
+
+# Time Complexity:
+#   - Init: O(1)
+#   - addWord: O(n) -> In every case, traverse through every char of the word and advance in trie / add to trie.
+#   - search: O(n * 26) -> O(n) -> In worst case, (all chars are "."), we need to check every item in every level. Every level contains, at most, 26 characters to check.
+
+# Space Complexity:
+#   - addWord: O(n) -> Store each character in trie, on a different level.
+#   - search: O(m) -> where m is the length of the longest word -> Worst case involves searching for the longest word. Call stack can contain 1 function call for each level of the trie.
+#       - O(1) for any search that doesn't include any "." characters.
