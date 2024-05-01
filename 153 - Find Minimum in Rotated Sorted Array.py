@@ -57,3 +57,29 @@ class Solution:
         return minValue
 
 # Time Complexity: O(log(n)) -> Binary search of a single array.
+
+
+# 2nd Solution:
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        # Array is sorted, but is "rotated" so that the min value can start at any index. Find the minimum.
+        # We can binary search here, but we need to do additional steps to determine which "side" contains the minimum value.
+
+        left, right = 0, len(nums) - 1
+        res = nums[0]
+
+        while left <= right:
+            mid = (left + right) // 2
+            res = min(res, nums[mid])
+
+            # Now, binary search into the side that contains the minimum.
+            if nums[mid] <= nums[right]: # Mid is in right side, so we can search left.
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return res
+
+# Time Complexity: O(log(n)) -> Binary search of an array of size n.
+# Space Complexity: O(1) -> No additional storage used.
