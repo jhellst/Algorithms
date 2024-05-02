@@ -47,5 +47,6 @@ class Solution:
 
         return res
 
-# Time Complexity: O(n) -> Traverse the array three times.
-# Space Complexity: O(n) -> Store prefixes and postfixes in array of length n.
+
+# Time Complexity: O(3n) -> O(n) -> Traverse nums array 3 times.
+# Space Complexity: O(2n) -> O(n) -> Store n values in 2 separate arrays (prefixes and postfixes).
