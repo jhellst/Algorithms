@@ -24,23 +24,18 @@
 
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        # Graph-style problem. We want to traverse to the end, finding the minimum sum path.
-        # We can only go to the right or down at any point.
+        # Dynamic programming using a 2D grid. Traverse the grid, taking the minimum path to get to that point.
 
-        # Key takeaway: Traverse the grid, and at each cell add the minimum of the cell to the left or above.
-        rows = len(grid)
-        cols = len(grid[0])
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if i > 0 and j > 0:
+                    grid[i][j] += min(grid[i - 1][j], grid[i][j - 1])
+                elif i > 0:
+                    grid[i][j] += grid[i - 1][j]
+                elif j > 0:
+                    grid[i][j] += grid[i][j - 1]
 
-        for r in range(rows):
-            for c in range(cols):
-                if r == 0 and c > 0:
-                    grid[r][c] += grid[r][c - 1]
-                elif c == 0 and r > 0:
-                    grid[r][c] += grid[r - 1][c]
-                elif r > 0 and c > 0:
-                    grid[r][c] += min(grid[r - 1][c], grid[r][c - 1])
+        return grid[len(grid) - 1][len(grid[0]) - 1]
 
-        return grid[rows - 1][cols - 1]
-
-# Time Complexity: O(m * n) -> One pass of m * n matrix
-# Space Complexity: O(m * n) -> All values stored in a single m * n matrix
+# Time Complexity: O(m * n) -> Traverse the entire grid one time.
+# Space Complexity: O(1) -> No additional storage used.
