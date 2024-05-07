@@ -38,3 +38,6 @@ class Solution:
                 rightMax = max(height[right], rightMax)
 
         return totalVolume
+
+# Time Complexity: O(n) -> Single pass of array with 2 pointers.
+# Space Complexity: O(1) -> No additional storage used.
