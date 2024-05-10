@@ -94,3 +94,72 @@ class LRUCache:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+
+# 2nd Solution:
+
+class Node:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    # Use a doubly-linked list to enable O(1) "get" and "put" operations.
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {} # stores key:node
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next, self.right.prev = self.right, self.left
+
+    # Helper functions to insert/remove nodes.
+    def insert(self, node):
+        # Insert node as MRU.
+        prev = self.right.prev
+        prev.next = node
+        node.next = self.right
+        self.right.prev = node
+        node.prev = prev
+
+    def remove(self, node):
+        prev, nxt = node.prev, node.next
+        prev.next = nxt
+        nxt.prev = prev
+
+
+    def get(self, key: int) -> int: # Looks for a node. If exists, make it the MRU AND return the value. If not found, return -1.
+        if key in self.cache:
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
+        else:
+            return -1
+
+
+    def put(self, key: int, value: int) -> None: # Inserts a node as the MRU. If it exists, remove it and THEN insert as the MRU. Must update self.cache, as well.
+        if key in self.cache:
+            self.remove(self.cache[key])
+
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+
+        if len(self.cache) > self.capacity: # If capacity is exceeded, remove LRU.
+            lru = self.left.next
+            self.remove(self.cache[lru.key])
+            del self.cache[lru.key]
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+
+# Time Complexity:
+#   - init: O(1)
+#   - get: O(1) -> O(1) for lookup and insertion/removal of a node.
+#   - put: O(1) -> O(1) for lookup and insertion/removal of a node.
+
+# Space Complexity: O(capacity) -> Cache will store a key/node pair up to self.capacity.
