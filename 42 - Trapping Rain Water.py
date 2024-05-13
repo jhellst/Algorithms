@@ -41,3 +41,31 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of array with 2 pointers.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        # Use 2 pointers to "trap" rain water while moving inwards from both sides.
+        # Greedily select the lower side to increment inwards first -> this will prevent issues with duplicate counting.
+
+        left, right = 0, len(height) - 1
+        leftMax, rightMax = height[left], height[right]
+        waterVolume = 0
+
+        while left < right:
+            leftH, rightH = height[left], height[right]
+            if leftH <= rightH:
+                waterVolume += max(0, leftMax - leftH)
+                left += 1
+                leftMax = max(leftH, leftMax)
+            else:
+                waterVolume += max(0, rightMax - rightH)
+                right -= 1
+                rightMax = max(rightH, rightMax)
+
+        return waterVolume
+
+# Time Complexity: O(n) -> Single pass of array with 2 pointers from each end.
+# Space Complexity: O(1) -> No additional storage used.
