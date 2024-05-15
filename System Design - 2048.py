@@ -8,7 +8,7 @@
 
 #   - Game can end in 2 ways:
 #       1) You get a cell to have a value equal to 2048.
-#       2) All squares have a value and none are equal to 2048.
+#       2) All squares have a value and none are equal to 2048 AND no adjacent cells are equal in value.
 
 # Example: If we tilt phone right, we shift EVERY cell's value to the right, as far as it can go. Start by shifting all numbers starting from the right.
 #   - Then, check if game is won or lost.
@@ -51,3 +51,86 @@ class Game:
             # Then, combine all cells that are equal and horizontally adjacent. Check for win in this stage.
 
             # Check if game is won. Then, check if game is lost. If neither, we can continue playing moves.
+
+
+
+
+
+
+
+
+
+
+
+
+# 2nd Attempt at System Design Pseudocode:
+
+# 2048 Requirements:
+#   - Game board which is 4*4, and starts with two random cells populated.
+#   - Player can "tilt" the board in 4 different directions. These are the 4 available moves at any point.
+#       - When a tilt occurs -> combine (and double) any values that are touching in that direction and add 1 more "2" value in a random, empty cell.
+
+# Game is single-player.
+# Score is maintained as the max value that you've reached in the game board.
+
+# Need to validate when game is 1) won or 2) over
+#   - Check this after each move.
+#   - You WIN if you can get a single cell's value to equal 2048.
+#   - You LOSE if you can't make any more moves AND you haven't won.
+
+
+# OOP Class Design:
+
+class Game2048:
+    def __init__(self):
+        self.board = [[[None] * 4] for i in range(4)] # 4*4 2D array.
+        self.squares_filled = 0 # Game ends when this reaches 16.
+        self.game_over = False
+
+    def start_game(self): # Starts a new game, resets the board and all other stats.
+        # Reset self.board.
+        # Randomly select 2 unique cells in the board and place a "2" in them. (Technically, there's a 10% chance that there will be a 4 instead).
+
+    def make_move(self, tilt_direction):
+        # Provide 4 different algorithms to process tiling the board in different directions.
+
+        # Example for move_tilt_right:
+        def move_tilt_right(self):
+            # Every cell will move as far to the right as possible, starting with the far right.
+            # Then, we want to combine the shifted cells wherever the same value is touching in left/right axis.
+            #   - Basically, any horizontally touching cells that are equal will combine. When we tilt right, we'll combine starting from the right moving to the left.
+
+            # To "Move" numbers:
+            # For each row:
+            #   Initialize pointer at last column index, to store last open cell.
+            #   For each column in the row, starting from the last index (right side):
+            #       if there's a value in that cell, make current cell == None and move current cell's value to the current pointer location.
+            #           -> Then, increment the pointer.
+
+            # To "Combine" numbers:
+            # For each row:
+            #   Initialize pointer at last column index, to store last open cell.
+            #   For each column in the row, starting from the last index (right side):
+            #       If there's a value in that cell AND the next value is the same -> combine them and move it to the pointer location. Change the value of the other cell to None.
+            #           -> Then, increment the pointer.
+            # Important: At each combine, keep track of score (compare score with value of every newly combined cell). If it ever reaches 2048, you win.
+            #   - If you don't win -> check for loss -> this will check if there are 0 empty cells left in the board.
+
+            # After each move -> combine:
+            # 1) Re-process score to be the max of current_score and the value of the newly combined cell.
+            # 2) Check to see if we've won.
+            # 3) If game isn't over, add another "2" to a randomly selected empty space in the board.
+            # 5) Check to see if we've lost (the board is filled and there are NO adjacent cells of equal value).
+            # 6) Allow for another move to be made.
+
+    # Methods:
+    #   - start_game()
+    #   - check_win()
+    #   - check_loss()
+    #   - move()
+    #       - separate logic for tilting your phone up, down, left, and right.
+
+
+# Questions to ask:
+# 1) Do we need to provide score-tracking for multiple games, or a max score?
+# 2) Is there any specific output that you'd like to see after moves, winning, or losing?
