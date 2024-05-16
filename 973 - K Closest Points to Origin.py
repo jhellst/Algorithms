@@ -42,5 +42,5 @@ class Solution:
 
         return [points for distance, points in maxHeap]
 
-# Time Complexity: O(n*log(k)) -> Visit every point in points array and conduct heap operations of a heap of size k.
+# Time Complexity: O(n + nlog(k)) -> O(n*log(k)) -> Traverse array of size n and conduct heap operations on a heap of length k.
 # Space Complexity: O(k) -> Store up to k elements on maxHeap.
