@@ -20,25 +20,24 @@
 
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        # Want to merge all intervals where they overlap.
-        # Need to sort the intervals, then merge them until either 1) no overlaps left or 2) 1 or less items on stack.
-
-        stack = []
+        # Given a list of intervals (non-sorted), merge all overlaps and return the final list of intervals.
         intervals.sort()
-        # print(intervals)
+        curStart, curEnd = intervals[0]
+        res = [] # Contains intervals that have already been processed and added.
 
-        for x, y in intervals:
-            if not stack:
-                stack.append((x, y))
-            else:
-                curX, curY = stack[-1]
-                # If overlap, we want to merge the intervals.
-                if x <= curY: # Overlap.
-                    stack[-1] = (curX, max(y, curY))
-                else:
-                    stack.append((x, y))
+        for start, end in intervals[1:]:
+            # Logic to determine if it overlaps with the currently stored interval.
 
-        return stack
+            if start > curEnd:
+                res.append([curStart, curEnd])
+                curStart, curEnd = start, end
+            elif end < curStart:
+                res.append([start, end])
+            else: # Some overlap. Combine the intervals and reassign curStart, curEnd to match the newly merged interval.
+                curStart, curEnd = min(start, curStart), max(end, curEnd)
 
-# Time Complexity: O(n) -> One pass of each interval in array.
-# Space Complexity: O(n) -> Store up to each interval on stack.
+        res.append([curStart, curEnd]) # Append final interval.
+        return res
+
+# Time Complexity: O(n + n * log(n)) -> O(n * log(n)) -> Sort intervals array of length n, then single pass of intervals array.
+# Space Complexity: O(1) -> No additional storage used.
