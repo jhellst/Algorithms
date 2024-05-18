@@ -46,3 +46,36 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in the tree once.
 # Space Complexity: O(h) -> O(n) -> Stack can contain 1 call for every level in tree, which is every node in worst case.
+
+
+
+# 2nd Solution:
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        # Height difference of > 1 makes the entire tree NOT balanced.
+        # DFS into each subtree, returning the maxLength of the subtree AND a boolean that determines if the subtree itself is balanced.
+
+        def dfs(node):
+            if not node:
+                return [True, 0]
+
+            left = dfs(node.left) # [Boolean, max_subtree_height]
+            right = dfs(node.right) # [Boolean, max_subtree_height]
+
+            if left[0] and right[0] and abs(left[1] - right[1]) <= 1: # If both subtrees are balanced AND the height difference is no more than 1 -> return [True, max_height + 1].
+                return [True, 1 + max(left[1], right[1])]
+
+            return [False, 0]
+
+        return dfs(root)[0]
+
+# Time Complexity: O(n) -> Visit every node in the BST in worst case.
+# Space Complexity: O(h) -> O(n) ->Call stack contains recursive function calls for every level of the tree. In worst case, h == n.
