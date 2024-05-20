@@ -93,3 +93,49 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse every node in the linked list once.
 # Space Complexity: O(n) -> In worst case, every node is a "child" and will be stored on the stack.
+
+
+
+# 2nd Solution:
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val, prev, next, child):
+        self.val = val
+        self.prev = prev
+        self.next = next
+        self.child = child
+"""
+
+class Solution:
+    def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        # Traverse the entirety of the list, prioritizing immediately stepping into any "child" nodes (over "next" nodes).
+        # Use a stack to store "next" node in the case that a node has "next" and "child".
+
+        tail = head
+        stack = []
+
+        prev = None
+        while tail or stack:
+            if tail.next and tail.child:
+                stack.append(tail.next)
+                tail.next = tail.child
+                tail.child = None
+
+            elif tail.child: # Only "child".
+                tail.next = tail.child
+                tail.child = None
+
+            elif not tail.child and not tail.next and stack: # No "next" or "child" node next. Retrieve next node from stack (if any).
+                tail.next = stack.pop()
+
+            tail.prev = prev
+            prev = tail
+            tail = tail.next
+
+        return head
+
+
+# Time Complexity: O(n) -> Visit every node in the linked list 1 time.
+# Space Complexity: O(n) -> In worst case, stack will contain every "next" node in the entirety of the linked list. This would (at worst), be half of the nodes in the list.
