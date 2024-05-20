@@ -53,3 +53,36 @@ class Solution:
 
 # Follow up: If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?
 
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # Using the definition of a BST, we can "traverse" the BST to its smallest element before tracking back up, in order.
+
+        stack = []
+        cur_node = root
+        count = 0
+
+        while cur_node or stack: # Traverse all the way to the far left (smallest element in the subtree).
+
+            while cur_node:
+                stack.append(cur_node)
+                cur_node = cur_node.left
+
+            cur_node = stack.pop() # cur_node is on top of stack.
+            count += 1
+            if count == k: # If we're at count == k, return the cur_node's value.
+                return cur_node.val
+
+            cur_node = cur_node.right # Step into cur_node's right subtree.
+
+# Time Complexity: O(n) -> In worst case, visit every node in the BST.
+# Space Complexity: O(h) -> O(n) -> Store calls on stack for every level of BST. In worst case, h == n.
