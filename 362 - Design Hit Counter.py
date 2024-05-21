@@ -75,3 +75,39 @@ class HitCounter:
 #   - hit: O(k) -> In worst case, pop the entirety of self.hits (k elements).
 #   - getHits: O(k) -> In worst case, pop the entirety of self.hits (k elements).
 # Space Complexity: O(n) -> In worst case, the data structure will contain every "hit" that has occured.
+
+
+
+
+# 2nd Solution:
+
+# Hits counter that 1) records a "hit" at a given timestamp, and 2) returns the # of "hits" from the last 5 minutes (300 seconds).
+
+class HitCounter:
+
+    def __init__(self):
+        self.hits = deque() # Contains the timestamp of each "hit" on a deque/array.
+
+    def hit(self, timestamp: int) -> None:
+        self.hits.append(timestamp)
+
+    def getHits(self, timestamp: int) -> int:
+        # Search to remove any expired timestamps of "hits". Then, return len(self.hits).
+        # Consider binary search, otherwise can use linear search.
+
+        while self.hits and self.hits[0] + 300 <= timestamp:
+            self.hits.popleft()
+
+        return len(self.hits)
+
+
+# Your HitCounter object will be instantiated and called as such:
+# obj = HitCounter()
+# obj.hit(timestamp)
+# param_2 = obj.getHits(timestamp)
+
+
+# Time Complexity:
+#   - hit: O(1)
+#   - getHits: O(n) -> In worst case, will remove every "hit" on self.hits deque.
+# Space Complexity: O(n) -> Stores in self.hits for every "hit" we encounter. In worst case, all will be present on self.hits at the end of operations.
