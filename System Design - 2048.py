@@ -26,7 +26,7 @@
 # Classes
 
 class Game:
-    def __init__(self, numRows=4, numCols=4) -> # Possibly take numRows, numCols as inputs. Otherwise, we can assume 4x4.
+    def __init__(self, numRows=4, numCols=4): # -> Possibly take numRows, numCols as inputs. Otherwise, we can assume 4x4.
         row = [None] * numCols
         self.board = [row[::] for _ in range(numRows)] # Initialize board with one "2" and one "4", both in random positions.
         #   - Place a 2 and a 4 in random cells. Make sure to prevent duplicate cell.
@@ -86,6 +86,7 @@ class Game2048:
         self.board = [[[None] * 4] for i in range(4)] # 4*4 2D array.
         self.squares_filled = 0 # Game ends when this reaches 16.
         self.game_over = False
+        self.score = 2 # Whatever the max value is at the current moment.
 
     def start_game(self): # Starts a new game, resets the board and all other stats.
         # Reset self.board.
@@ -95,7 +96,9 @@ class Game2048:
         # Provide 4 different algorithms to process tiling the board in different directions.
 
         # Example for move_tilt_right:
-        def move_tilt_right(self):
+
+        if tilt_direction ==  "R":
+
             # Every cell will move as far to the right as possible, starting with the far right.
             # Then, we want to combine the shifted cells wherever the same value is touching in left/right axis.
             #   - Basically, any horizontally touching cells that are equal will combine. When we tilt right, we'll combine starting from the right moving to the left.
