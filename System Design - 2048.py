@@ -3,7 +3,7 @@
 # Description:
 #   - Game with 1 player
 #   - 4 possible "moves" -> tilt left, right, up, down
-#      - When we "move" in a direction, adjacent boxes that "bump" will combine IF AND ONLY IF they have the same value.
+#      - When we "move" in a direction, adjacent boxes that "bump" will combine IF AND ONLY IF they have the same value
 #      - Whenever we make a move -> if game is not over, place a "2" in a random, unoccupied cell. -> Apparently, 10% chance that it will be a "4" instead.
 
 #   - Game can end in 2 ways:
@@ -92,9 +92,13 @@ class Game2048:
         # Reset self.board.
         # Randomly select 2 unique cells in the board and place a "2" in them. (Technically, there's a 10% chance that there will be a 4 instead).
 
+    def tilt_right() ....
+    
     def make_move(self, tilt_direction):
         # Provide 4 different algorithms to process tiling the board in different directions.
 
+        if tilt_direction == R:
+            tilt_right()
         # Example for move_tilt_right:
 
         if tilt_direction ==  "R":
@@ -137,3 +141,71 @@ class Game2048:
 # Questions to ask:
 # 1) Do we need to provide score-tracking for multiple games, or a max score?
 # 2) Is there any specific output that you'd like to see after moves, winning, or losing?
+
+
+# Marcus' short solution
+
+# Design 2048
+
+# Class
+#
+# You need a class for the GAME
+#   Has a board with a state
+#   Has a single player
+#   Has a score (max square)
+
+# A player can make one of four "moves": tilt .... r, l, u, d (public)
+#    > tilt to right, means combine to the right
+#        > 2, 4, 4, 4 RIGHT x, 2, 4, 8
+#        > 4, 4, 4, 4 RIGHT x, x, 8, 8 (correct, requires tilt again to get 16)
+#            > At the end of tilting the board, one of the empty squares (randomly) becomes a 2
+# Once a move is made the class needs ...
+#    > logic to update the state of the board after the move
+#    > logic to determine if the game is over
+
+class Direction:
+
+class MoveButton:
+     public MoveButton(dir):
+        self.dir = dir
+        self.text = dir.toText()
+    
+# 4 move_button(s)  -> calls Game.make_move(dir)
+
+class Game2048
+
+    public Game(player?)
+         # create a 4x4 board whose values are integers (see properties) 
+         # with 2 of the spots (randomly) on the board containing 2s
+
+    private properties
+        current_score # max val on board
+        board = [[]] # 4x4, int
+        player?
+
+   public method(s)
+       make_move (tilt) parameters (direction) # be efficient and update the max score as we calculate the new board state
+            # looks repetitive, can I use a data structure like a dict to make more terse and efficient?
+            case tilt:
+                L:
+                    generic_tilt(/*x=*/True, /*y=*/False, /*start=*/True) # LEFT
+                R:
+                    generic_tilt(/*x=*/True, /*y=*/False, /*start=*/False) # RIGHT
+                U: ...
+                D: ...
+          # first make the move and update state, keeping track of max value after combining
+          # diplay_board()
+               # uses game_over() to determine if it needs to say game over (not allow user to make moves)
+           
+
+   private methods
+       # Example, how to tilt left by calling generic_tilt?
+       #    generic_tilt(/*x=*/True, /*y=*/False, /*start=*/True) # LEFT
+       #    generic_tilt(/*x=*/True, /*y=*/False, /*start=*/False) # RIGHT
+       generic_tilt : x (bool), y (bool), start (bool)
+       game_over : true | false 
+       display_board
+
+     
+   
+
