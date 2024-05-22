@@ -81,3 +81,34 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in the tree once.
 # Space Complexity: O(h) -> O(n) -> Store up to h items on call stack, where h is the height of the tree. In worst case, n = h.
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        # Want to count the "good" nodes in the tree.
+        #   - A node is "good" if node.val >= all values above it in the tree/subtree.
+        # Note: Root node will always be a "good" node.
+
+        # We'll dfs the entire tree, counting "good" nodes along the way.
+        # As we step deeper into the tree, ensure that we're adjusting the max_value accordingly.
+
+        def dfs(node, max_value):
+            if not node:
+                return 0
+            if node.val >= max_value:
+                return 1 + dfs(node.left, max(node.val, max_value)) + dfs(node.right, max(node.val, max_value))
+
+            return dfs(node.left, max(node.val, max_value)) + dfs(node.right, max(node.val, max_value))
+
+        return dfs(root, root.val)
+
+# Time Complexity: O(n) -> Visit every node in the binary tree once.
+# Space Complexity: O(h) -> O(n) -> Store recursive function calls on stack up to height of tree. In worst case, h == n.
