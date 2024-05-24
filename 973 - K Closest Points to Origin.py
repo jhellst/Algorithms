@@ -40,7 +40,7 @@ class Solution:
             if len(maxHeap) > k:
                 heapq.heappop(maxHeap)
 
-        return [points for distance, points in maxHeap]
+        return [point for distance, point in maxHeap]
 
 # Time Complexity: O(n + nlog(k)) -> O(n*log(k)) -> Traverse array of size n and conduct heap operations on a heap of length k.
 # Space Complexity: O(k) -> Store up to k elements on maxHeap.
