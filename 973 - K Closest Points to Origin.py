@@ -44,3 +44,26 @@ class Solution:
 
 # Time Complexity: O(n + nlog(k)) -> O(n*log(k)) -> Traverse array of size n and conduct heap operations on a heap of length k.
 # Space Complexity: O(k) -> Store up to k elements on maxHeap.
+
+
+
+
+# Solution #2:
+
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        # Store points on a max_heap.
+
+        max_heap = [] # [distance, point]
+
+        for point in points:
+            distance = sqrt(point[0]**2 + point[1]**2)
+            heapq.heappush(max_heap, [-distance, point])
+
+            if len(max_heap) > k:
+                heapq.heappop(max_heap)
+
+        return [point for distance, point in max_heap]
+
+# Time Complexity: O(n * log(k)) -> Traverse array of length n and conduct heap operations on heap of length k.
+# Space Complexity: O(k) -> Store k items in max_heap.
