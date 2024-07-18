@@ -45,3 +45,30 @@ class Solution:
 
 # Time Complexity: O(n) -> Two pointers, single pass of each item in array.
 # Space Complexity: O(1) -> No additional storage needed.
+
+
+
+
+
+
+# 2nd Solution (from Mock interview with Marcus P.)
+
+def max_area(height):
+  left, right = 0, len(height) - 1
+  max_area = 0
+
+  while left < right:
+    area = min(height[left], height[right]) * (right - left)
+    max_area = max(max_area, area)
+
+    if height[left] < height[right]: # Decrement pointer inwards -> choose the shorter side.
+      left += 1
+    else:
+      right -= 1
+
+  return max_area
+
+# print(max_area(height))
+
+# Time Complexity: O(n)
+# Space Complexity: O(1)
