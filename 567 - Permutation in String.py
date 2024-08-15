@@ -54,3 +54,59 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of each element in array, exactly 2 times.
 # Space Complexity: O(n) -> Store each char in s1 up to once in dict. 2nd dict to also store all chars in s2.
+
+
+
+# 2nd Solution: Better space complexity using array for storing letter counts.
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        # Use a sliding window of length == len(s1), traverse the string and look for permutation matches.
+        # - Maintain a size of exactly len(s1).
+        # Use a dict or an array of length 26 to store letter_counts as we slide the window.
+
+        if len(s1) > len(s2):
+            return False
+        elif len(s1) == 1:
+            return s1[0] in s2
+
+        letter_count = [0] * 26 # One index for each letter a-z.
+        s1_letter_count = [0] * 26 # Represents the letter counts from s1.
+
+        for char in s1:
+            cur_letter_index = ord(char) - ord('a')
+            s1_letter_count[cur_letter_index] += 1
+
+        left, right = 0, -1
+
+        for char_index in range(len(s1)):
+            right += 1
+            cur_letter = s2[char_index]
+            cur_letter_index = ord(cur_letter) - ord('a')
+            letter_count[cur_letter_index] += 1
+
+        if letter_count == s1_letter_count:
+            return True
+
+        # Now, we can slide the window, updating letter_count. As we do this, compare with s1_letter_count and return true if that condition is met.
+        while right < len(s2) - 1:
+            letter_to_remove = s2[left]
+            remove_letter_index = ord(letter_to_remove) - ord('a')
+            letter_count[remove_letter_index] -= 1
+            left += 1
+
+            right += 1
+            letter_to_add = s2[right]
+            add_letter_index = ord(letter_to_add) - ord('a')
+            letter_count[add_letter_index] += 1
+
+            if letter_count == s1_letter_count:
+                return True
+
+        if letter_count == s1_letter_count:
+            return True
+
+        return False
+
+# Time Complexity: O(n) -> Traverse the array with a sliding window exactly 1 time (visit each character up to 2 times).
+# Space Complexity: O(1) -> Constant space, using an array of fixed length == 26.
