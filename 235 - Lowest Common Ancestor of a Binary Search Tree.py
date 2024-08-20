@@ -57,3 +57,38 @@ class Solution:
 
 # Time Complexity: O(log(n)) -> Traverse the tree, binary search-like.
 # Space Complexity: O(1) -> No additional storage needed.
+
+
+# 2nd Solution -> Recursive.
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        # LCA is the node that has both p and q as descendants (or self).
+        # We want to recursively search down the tree until either
+        #   1) We're at p or q, and p or q is "downstream"
+        #   2) Both p and q are "downstream" in separate sides of the tree.
+        # BST -> Therefore, we can search towards the right direction.
+
+        def recurse(node):
+            if node.val > p.val and node.val < q.val: # Values are in left/right subtrees.
+                return node
+            elif node.val == p.val or node.val == q.val:
+                return node
+            elif node.val > p.val and node.val > q.val: # Both values are in left subtree.
+                return recurse(node.left)
+            elif node.val < q.val and node.val < p.val: # Both values are in right subtree.
+                return recurse(node.right)
+
+            return node # Return root of tree, if we reach this point.
+
+        return recurse(root)
+
+# Time Complexity: O(n) -> Traverse the entirety of the BST in worst case.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack equal to h. In worst case, h == n.
