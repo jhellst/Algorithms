@@ -110,3 +110,65 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse the array with a sliding window exactly 1 time (visit each character up to 2 times).
 # Space Complexity: O(1) -> Constant space, using an array of fixed length == 26.
+
+
+# 2nd Solution:
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        # Sliding window of size len(s2).
+        #   - Count each time that the char_counts match.
+        #   - In theory, we can use an array of length 26 to store counts to improve time complexity.
+
+        if len(s1) > len(s2):
+            return False
+        elif len(s1) == 1:
+            return s1[0] in s2
+
+        s1_char_count = [0] * 26
+        s2_char_count = [0] * 26
+
+        left, right = 0, -1
+
+        for i in range(len(s1)):
+            right += 1
+
+            s1_char_index = ord(s1[right]) - ord('a')
+            s2_char_index = ord(s2[right]) - ord('a')
+
+            s1_char_count[s1_char_index] += 1
+            s2_char_count[s2_char_index] += 1
+
+
+        # Now, each array is populated with the starting count. Continue to "slide" the window and check for equality.
+
+        if s1_char_count == s2_char_count:
+            return True
+
+        while right < len(s2) - 1: # Check equality, then remove far left char and add new right char.
+
+            if s1_char_count == s2_char_count:
+                return True
+
+            # Remove far left char.
+            left_char = s2[left]
+            left_char_index = ord(left_char) - ord('a')
+            s2_char_count[left_char_index] -= 1
+            left += 1
+
+            right += 1
+            right_char = s2[right]
+            right_char_index = ord(right_char) - ord('a')
+            s2_char_count[right_char_index] += 1
+
+            if s1_char_count == s2_char_count:
+                return True
+
+
+        if s1_char_count == s2_char_count:
+            return True
+        else:
+            return False
+
+# Time Complexity: O(n) -> Traverse s2 exactly one time.
+# Space Complexity: O(1) -> Store counts in 2 arrays of length 26 -> constant time.
