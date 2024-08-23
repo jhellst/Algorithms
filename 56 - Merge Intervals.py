@@ -41,3 +41,40 @@ class Solution:
 
 # Time Complexity: O(n + n * log(n)) -> O(n * log(n)) -> Sort intervals array of length n, then single pass of intervals array.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+                # Merge the intervals.
+        #   - Sort the intervals
+        #   - Then, merge any overlapping intervals as we traverse the array.
+        #   - There will be a cur_interval that's being evaluated as we traverse the other intervals in the array.
+        #   - We'll process the interval depending on if there is a merge, and if the interval has been passed over yet.
+
+        res = []
+
+        intervals.sort(key=lambda interval: (interval[0], interval[1])) # Sort intervals to be in order as they occur.
+        cur_start, cur_end = intervals[0]
+
+        # Possible conditions for intervals:
+        #   1) cur_interval is BEFORE -> append cur_interval and replace cur_interval
+        #   2) cur_interval is AFTER -> append new_interval and don't replace cur_interval (might not occur because of sorting)
+        #   3) Overlap -> modify cur_interval to represent the new merged interval and move on.
+
+        for start, end in intervals[1:]:
+            if cur_end < start: # cur_interval is BEFORE.
+                res.append([cur_start, cur_end])
+                cur_start, cur_end = start, end
+            elif cur_start > end: # cur_interval is AFTER.
+                res.append([start, end])
+            else: # Some overlap.
+                cur_start, cur_end = min(start, cur_start), max(end, cur_end)
+        res.append([cur_start, cur_end])
+
+        return res
+
+# Time Complexity: O(n * log(n)) -> Sort the intervals array and visit each interval once.
+# Space Complexity: O(1) -> No additional storage used other than res.
