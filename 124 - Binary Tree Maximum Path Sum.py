@@ -87,3 +87,34 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in the tree once.
 # Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack up to height of the tree. In worst case, h == n.
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        # Find the maximum sum of all possible paths in the binary tree.
+
+        self.res = root.val
+
+        def find_max_path(node):
+            if not node:
+                return 0
+            left = find_max_path(node.left) if node.left else 0
+            right = find_max_path(node.right) if node.right else 0
+
+            self.res = max(self.res, left + right + node.val, left + node.val, right + node.val, node.val)
+
+            return max(left, right, 0) + node.val
+
+        find_max_path(root)
+        return self.res
+
+# Time Complexity: O(n) -> Visit every node in the tree 1 time.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack equal to height of tree. In worst case, h == n.
