@@ -44,3 +44,29 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse every interval exactly 1 time.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        # Given a new interval, merge all overlapping time periods together.
+
+        res = []
+
+        for start, end in intervals:
+            if end < newInterval[0]: # newInterval is after this interval -> append curInterval.
+                res.append([start, end])
+            elif start > newInterval[1]: # newInterval is before this interval -> append newInterval.
+                res.append(newInterval)
+                newInterval = [start, end]
+            else: # Merging intervals -> Modify newInterval.
+                newInterval = [min(start, newInterval[0]), max(end, newInterval[1])]
+
+        res.append(newInterval)
+
+        return res
+
+# Time Complexity: O(n) -> Traverse intervals array 1 time.
+# Space Complexity: O(1) -> No additional storage used.
