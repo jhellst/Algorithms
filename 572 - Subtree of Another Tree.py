@@ -59,3 +59,45 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in tree, in worst case.
 # Space Complexity: O(h) -> O(n) -> Stack may contain a recursive call for every level in the tree.
+
+
+
+
+#2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        # Return True if subRoot is fully contained within root, False otherwise.
+        #   - Note: We need to search subtrees if we don't find a match at any node.
+
+        if not root and not subRoot:
+            return True
+        elif not root or not subRoot:
+            return False
+
+        if root.val == subRoot.val:
+            if self.search(root, subRoot):
+                return True
+
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+
+    def search(self, root, sub_root):
+        if not root and not sub_root:
+            return True
+        elif not root or not sub_root:
+            return False
+
+        if root.val == sub_root.val:
+            return self.search(root.left, sub_root.left) and self.search(root.right, sub_root.right)
+        else:
+            return False
+
+
+# Time Complexity: O(n) -> In worst case, search entire tree for subtree -> visiting every node in the tree.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack up to height of tree. In worst case, n == h.
