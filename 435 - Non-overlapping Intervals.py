@@ -38,3 +38,26 @@ class Solution:
         return res
 
 # Time Complexity: O(n * log(n)) -> Sorted (O(log(n))) + traversal through sorted array (O(n))
+
+
+
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        # Count how many "merge" actions are needed for the sorted range of intervals. That number is the number of removals needed.
+
+        res = 0
+        intervals.sort()
+
+        prev_end = intervals[0][1]
+
+        for start, end in intervals[1:]:
+            if start >= prev_end: # No overlap, move on to next interval.
+                prev_end = end
+            else:
+                res += 1
+                prev_end = min(end, prev_end)
+
+        return res
+
+# Time Complexity: O(n*log(n)) -> Visit every interval in array after sorting.
+# Space Complexity: O(1) -> No additional storage used.
