@@ -172,3 +172,46 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse s2 exactly one time.
 # Space Complexity: O(1) -> Store counts in 2 arrays of length 26 -> constant time.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        # Return True if s2 contains a permutation of s1.
+        #   - Solution is sliding-window. Create a dict/counter of s1 and initialize a window of len(s1).
+        #   - Then, slide the window and return True if the dicts are ever the same.
+
+        left = 0
+        right = len(s1) # Right pointer is currently at the NEXT char to be added to the sliding window.
+
+        # Create dictionaries.
+        chars_s1 = collections.Counter(s1)
+        chars_s2 = collections.Counter(s2[0:right]) # Sliding window counter.
+
+        # Slide window and compare the dicts.
+        while right < len(s2):
+            if chars_s1 == chars_s2: # If dicts are equal, return True.
+                return True
+
+            # If dicts aren't equal, slide the window and reassign chars in chars_s2 (remove left pointer, add right pointer and increment both).
+            remove_char = s2[left]
+            add_char = s2[right]
+
+            chars_s2[remove_char] = chars_s2.get(remove_char) - 1 # Remove char at left pointer.
+            if chars_s2[remove_char] == 0:
+                del chars_s2[remove_char]
+
+            chars_s2[add_char] = chars_s2.get(add_char, 0) + 1 # Add char at right pointer.
+
+            left += 1
+            right += 1
+
+        if chars_s1 == chars_s2: # Check if dicts are equal one final time.
+            return True
+        return False
+
+# Time Complexity: O(len(s1) + len(s2)) -> O(n) -> Create dicts for s1 and s2, and traverse each char in s2 once (in worst case).
+# Space Complexity: O(len(s1) + len(s2)) -> O(n) -> Store chars in dicts of max_size s1 and s2.
+#   - Could reduce space complexity to O(26) -> 0(1) -> Instead of using dicts, just use arrays of length 26.
