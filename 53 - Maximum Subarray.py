@@ -41,3 +41,25 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of array
 # Space Complexity: O(1) -> No additional storage
+
+
+# 2nd Solution:
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # Kadane's theorem. Whenever the sub_array's sum is < 0, we can reset it greedily.
+
+        cur_sum = nums[0]
+        res = cur_sum
+
+        for num in nums[1:]:
+            if cur_sum < 0:
+                cur_sum = 0
+
+            cur_sum += num
+            res = max(res, cur_sum)
+
+        return res
+
+# Time Complexity: O(n) -> Traverse nums array once.
+# Space Complexity: O(1) -> No additional storage used.
