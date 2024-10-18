@@ -43,3 +43,30 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in tree exactly 1 time.
 # Space Complexity: O(h) -> Call stack can contain up to h calls (where h is height of tree).
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        # Invert the entire binary tree. EVERY subtree will be reversed beneath the root, and then the root is returned.
+
+        if not root:
+            return None
+
+        left = self.invertTree(root.left) if root.left else None
+        right = self.invertTree(root.right) if root.right else None
+
+        # Reverse the subtrees.
+        root.left, root.right = right, left
+
+        return root
+
+# Time Complexity: O(n) -> Visit (and reverse) every node in the binary tree exactly once.
+# Space Complexity: O(h) -> O(n) -> Call stack contains one call for each level in the tree -> In worst case, h == n.
