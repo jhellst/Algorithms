@@ -77,3 +77,62 @@ class TimeMap:
     # - set() -> O(1) -> Add to dict. Single operation for each "set"
     # - get() -> O(log(n)) -> In worst case, will binary search an array containing every value.
 # Space Complexity: O(n) -> Store every value once in a hashmap.
+
+
+
+
+
+# 2nd Solution:
+
+class TimeMap:
+    # Data structure must be able to retrieve a value with a given key at (or before) the timestamp.
+    #   - Prioritize the later timestamp, if necessary.
+    # Solution uses a dict that stores an array for each key.
+    # A linked list is another possible option.
+
+    def __init__(self):
+        self.map = {} # key: ListNode
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        # Add key and value to map.
+        if key in self.map:
+            self.map[key].append([timestamp, value])
+        else:
+            self.map[key] = [[timestamp, value]]
+            self.map[key].sort()
+
+    def get(self, key: str, timestamp: int) -> str:
+        # Retrieve from self.map -> return value at key for given timestamp.
+        #   - If current timestamp isn't in self.map[key] -> return the largest timestamp <= the provided "get" timestamp.
+
+        if not key in self.map:
+            return ""
+
+        # If key exists:
+        #   - Return largest timestamp_prev where timestamp_prev <= timestamp.
+        #   - If no timestamp_prev <= timestamp, return "".
+
+        # Binary search the array for the timestamp.
+        cur_array = self.map[key]
+        cur_res = ""
+
+        left, right = 0, len(cur_array) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            cur_timestamp, cur_val = cur_array[mid]
+
+            if cur_timestamp == timestamp:
+                return cur_val
+            elif cur_timestamp > timestamp: # Search to the left for a smaller timestamp.
+                right = mid - 1
+            else:
+                cur_res = cur_val # Store this val, because it is valid for now and might be the largest valid timestamp.
+                left = mid + 1
+
+        return cur_res
+
+# Time Complexity:
+    # INIT: O(1)
+    # SET: O(log(n)) -> Append new [timestamp, val] and sort the array. In worst case, array is of length == n.
+    # GET: O(log(n)) -> Binary search for timestamp within array. In worst case, array is of length == n.
+# Space Complexity: O(n) -> In worst case, store every timestamp/value combo in self.map, within an array.
