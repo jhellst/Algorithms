@@ -78,4 +78,38 @@ class Solution:
         return dfs(root)[0]
 
 # Time Complexity: O(n) -> Visit every node in the BST in worst case.
-# Space Complexity: O(h) -> O(n) ->Call stack contains recursive function calls for every level of the tree. In worst case, h == n.
+# Space Complexity: O(h) -> O(n) -> Call stack contains recursive function calls for every level of the tree. In worst case, h == n.
+
+
+# 3rd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        # Return True/False to determine if the tree is high-balanced.
+        #   - Height-balanced: For any node, no 2 subtrees differ in height by more than 1.
+
+        # Solution can be recursive -> check each subtree as we traverse lower into the tree.
+
+        def dfs(node):
+            if not node:
+                return [True, 0] # [is_balanced, height]
+
+            # Now, we need to determine the balance between the two current subtrees.
+            left_is_balanced, left_height = dfs(node.left)
+            right_is_balanced, right_height = dfs(node.right)
+            left_height += 1
+            right_height += 1
+
+            # Determine if 1) nested subtrees are balanced and 2) that current subtrees are balanced (within 1 height).
+            is_balanced = left_is_balanced and right_is_balanced and abs(left_height - right_height) <= 1
+            subtree_height = max(left_height, right_height)
+
+            return [is_balanced, subtree_height]
+
+        return dfs(root)[0]
