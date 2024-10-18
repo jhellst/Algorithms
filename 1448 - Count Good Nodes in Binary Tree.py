@@ -112,3 +112,40 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in the binary tree once.
 # Space Complexity: O(h) -> O(n) -> Store recursive function calls on stack up to height of tree. In worst case, h == n.
+
+
+
+
+# 3rd Solution:
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        # Return the total count of "good nodes" -> Nodes that are the greatest value yet seen within the sub-path.
+        #   - Determined by their ranking from root -> leaf. (e.g. 3, 4, 5 are all good nodes starting from root)
+
+        # Recursive solution. When we recurse deeper into the tree, must send the info containing the current max_value.
+        self.res = 0
+
+        max_val = root.val
+        def find_good_nodes(node, max_val):
+            if node:
+                if node.val >= max_val: # Check if current node is a good node.
+                    self.res += 1
+                    max_val = max(max_val, node.val)
+
+                # Now, recurse deeper into the tree to check lower nodes (continue to update max_val as we traverse).
+                find_good_nodes(node.left, max_val)
+                find_good_nodes(node.right, max_val)
+
+        find_good_nodes(root, max_val)
+        return self.res
+
+# Time Complexity: O(n) -> Visit every node once.
+# Space Complexity: O(h) -> O(n) -> Recursive calls stored on stack for every level of tree. In worst case, h == n.
