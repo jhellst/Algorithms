@@ -38,3 +38,26 @@ class Solution:
 
 # Time Complexity: O(n^2) -> Double-nested loop within nums/steps array.
 # Space Complexity: O(n) -> Store values in array of len(nums).
+
+
+# 2nd Solution:
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        # Greedy / DP solution. We need to return the min number of jumps required to reach the end.
+
+        steps = [inf] * len(nums) # Holds min # steps to reach each index.
+        steps[0] = 0
+
+        for i in range(len(nums)):
+            max_jump = nums[i]
+            min_steps = steps[i]
+
+            # Here, we want to simulate jumping -> replace jump value if it's lower.
+            for j in range(i, min(i + max_jump + 1, len(nums))):
+                steps[j] = min(steps[j], min_steps + 1)
+
+        return steps[-1]
+
+# Time Complexity: O(n^2) -> Nested loop within loop through nums array.
+# Space Complexity: O(n) -> Store min_steps in array of len(nums).
