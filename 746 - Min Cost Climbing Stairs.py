@@ -46,3 +46,23 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse range of (2, n) exactly one time.
 # Space Complexity: O(n) -> Store min_costs in array of length n.
+
+
+# 2nd Solution:
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        # Want to find the minimum cost required to reach the last index.
+        # DP-style solution. At each space, we'll store the minimum cost to reach that space.
+        #   - To simulate a "step", we are able to go 1 OR 2 steps ahead.
+
+        min_cost = [0] * len(cost)
+        min_cost[0], min_cost[1] = cost[0], cost[1]
+
+        for i in range(2, len(min_cost)): # For each step, store the minumum cost to get there -> need to look back 1 and 2 spaces.
+            min_cost[i] = cost[i] + min(min_cost[i - 1], min_cost[i - 2])
+
+        return min(min_cost[-1], min_cost[-2])
+
+# Time Complexity: O(n) -> Traverse cost array once.
+# Space Complexity: O(n) -> Store dp in array of length n.
