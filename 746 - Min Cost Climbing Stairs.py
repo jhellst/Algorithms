@@ -66,3 +66,23 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse cost array once.
 # Space Complexity: O(n) -> Store dp in array of length n.
+
+
+# 2nd Solution:
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        # Dynamic programming. We want to traverse the staircase while simulating the min_steps it takes to reach each space (as we reach it).
+        #   - We can take either 1 or 2 steps.
+        #   - We can start at index 0 or 1.
+
+        total_cost = [inf] * len(cost)
+        total_cost[0], total_cost[1] = cost[0], cost[1]
+
+        for i in range(2, len(cost)): # Loop through every index after 0 and 1, storing min_steps.
+            total_cost[i] = min(total_cost[i - 1], total_cost[i - 2]) + cost[i]
+
+        return min(total_cost[-1], total_cost[-2])
+
+# Time Complexity: O(n) -> Traverse array once.
+# Space Complexity: O(n) -> Store values in array of len(n).
