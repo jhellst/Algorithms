@@ -70,3 +70,60 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse list to split (O(n)), and Traverse split lists to link (O(n)).
 # Space Complexity: O(n) -> No additional storage.
+
+
+
+
+# 2nd Solution:
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        # We want to reorder the list in the following way:
+        #   - Split the list in half, then zipper-merge the two lists with the 2nd list reversed.
+        # Return the head of the resulting linked list that is joined.
+
+        dummy = ListNode(0, head)
+        # First, we want to "split" the list into 2 parts.
+        #   - Use fast, slow pointers to split the list.
+
+        slow, fast = dummy, dummy
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Now, fast == None and slow is located on the last node of L1. Split them now (start of L2 is slow.next).
+        l2 = slow.next
+        slow.next = None
+        # The lists are split. L1's head == head and L2's head == l2.
+
+        # Reverse the 2nd list and return its head afterwards.
+        prev = None
+        while l2:
+            tmp = l2.next
+            l2.next = prev
+
+            prev = l2
+            l2 = tmp
+        # prev is head of L2 (after reversing).
+
+        # Now, zipper-merge the two lists (starting with l1's head as 1st node).
+        l1, l2 = head, prev
+        while l1 and l2: # L1 will be >= in length to L2.
+            tmp_1, tmp_2 = l1.next, l2.next
+            l1.next = l2
+
+            l2 = tmp_1
+            l1 = l1.next
+
+        return head
+
+# Time Complexity: O(n) -> 2 complete traversals of linked list of length n.
+# Space Complexity: O(1) -> No additional storage used.
