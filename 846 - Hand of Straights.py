@@ -96,3 +96,33 @@ class Solution:
 
 # Time Complexity: O(n / groupSize * log(n)) -> Loop up to n // groupSize times and conduct heap operations on heap of size n.
 # Space Complexity: O(n) -> Store values on heap of max_length == n.
+
+
+# 2nd Solution:
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        # Want to simulate whether or not we can create "straights" of size groupSize.
+        # Use a set to store all remaining values + a counter/dict to store counts.
+
+        c = Counter(hand)
+        s = set(hand)
+
+        min_val = min(hand)
+
+        # Simulate creating hands of size groupSize.\
+        while s:
+            cur_val = min(s)
+            for i in range((groupSize)):
+                new_val = cur_val + i
+                if new_val not in s:
+                    return False
+                else:
+                    c[new_val] -= 1
+                    if c[new_val] == 0:
+                        s.remove(new_val)
+
+        return True
+
+# Time Complexity: O(n) -> Loop through set to read n values. Also need to find max_value in each loop.
+# Space Complexity: O(n) -> Store up to n elements in a set.
