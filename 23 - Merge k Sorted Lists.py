@@ -76,3 +76,55 @@ class Solution:
 
 # Time Complexity: O(n * log(k)) -> Traverse n nodes, and perform heap operations on a heap of length k.
 # Space Complexity: 2 * O(k) -> O(k) -> Store k items in a dict, and store k items in a dict.
+
+
+
+# 2nd Solution: Merge lists until reduced to a single list.
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        # Given an array of sorted linked lists, merge them, in order.
+        # We can combine heap functionality (with mapping) in order to determine the linked list to add from.
+
+        # 2nd Option: Merge 2 lists at a time (in ascending order) until we've merged every list.
+        #   - Likely more optimal solution -> it doesn't use heap/sort at any point.
+
+        def merge_2_lists(l1, l2): # Takes 2 sorted arrays and merges them, in order. Returns a single list.
+            tail = ListNode()
+            dummy = tail
+
+            while l1 and l2:
+                if l1.val <= l2.val:
+                    tail.next = l1
+                    l1 = l1.next
+                else:
+                    tail.next = l2
+                    l2 = l2.next
+                tail = tail.next
+
+            if l1:
+                tail.next = l1
+            if l2:
+                tail.next = l2
+
+            return dummy.next
+
+        while len(lists) > 1: # While multiple lists exist, continue to merge them until there is only 1 (sorted) list.
+            l1 = lists.pop()
+            l2 = lists.pop()
+            new_list = merge_2_lists(l1, l2)
+            lists.append(new_list)
+
+        if lists and lists[0]:
+            return lists[0]
+
+        return
+
+# Time Complexity: O(k * n) -> Merge 2 lists k times. For each merge, we visit n nodes.
+# Space Complexity: O(1) -> No additional storage space used.
