@@ -58,3 +58,32 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> Heap operations on heap of length n.
 # Space Complexity: O(n) -> N items stored on a max_heap.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        # Use a max_heap. We can pop two stones at a time and "smash" them together.
+        #   - If 2 stones are equal, destroy both. Otherwise, re-append 1 stone with val == abs(y - x).
+
+        max_heap = [- s for s in stones]
+        heapq.heapify(max_heap)
+
+        while len(max_heap) > 1:
+            # Pop 2 stones and smash them together.
+            stone_1 = -heapq.heappop(max_heap)
+            stone_2 = -heapq.heappop(max_heap)
+
+            if stone_1 != stone_2:
+                new_val = abs(stone_1 - stone_2)
+                heapq.heappush(max_heap, -new_val)
+
+        if not max_heap:
+            return 0
+        return -max_heap[0]
+
+# Time Complexity: O(n * log(n)) -> Conduct heap operations on heap of length n.
+# Space Complexity: O(n) -> Store n values on heap.
