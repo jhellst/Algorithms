@@ -63,3 +63,45 @@ class Solution:
 
 # Time Complexity: O(n * log(k)) -> Traverse all tasks (and intervals) and conduct heap operations on all tasks.
 # Space Complexity: O(k) -> O(n) -> All unique tasks to be stored in heap/queue/counter. In worst case, each task is unique.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        # We can use a stack/queue to simulate tasks becoming "completable".
+        #   - Pop the task from the queue that is 1) not in cooldown and 2) has the most # remaining.
+
+        c = Counter(tasks)
+        max_heap = [] # [-count, char]
+        delay_queue = deque() # [char, time_to_unblock, count] -> time_to_unblock is (time + n).
+
+        for key in c:
+            heapq.heappush(max_heap, [-c[key], key])
+
+        # Process:
+        #   - Pop from max_heap to get next task. Then, decrement task count and "complete" it.
+        #   - If that task still has count > 1, we need to put it on the delay queue.
+        #   - On each loop, check left side of delay_queue to see if any tasks can return to the max_heap.
+
+        time = 0
+
+        while max_heap or delay_queue: # As long as tasks remain on the max_heap OR on the delay_queue, we need to continue.
+
+            while delay_queue and delay_queue[0][1] < time:
+                cur_char, time_to_unblock, cur_count = delay_queue.popleft()
+                heapq.heappush(max_heap, [-cur_count, cur_char])
+
+            if max_heap: # Complete a task, then add it to the delay queue (if needed).
+                neg_cur_count, cur_task = heapq.heappop(max_heap)
+                cur_count = -neg_cur_count
+                if cur_count > 1: # Add to delay_queue
+                    delay_queue.append([cur_task, time + n, cur_count - 1])
+
+            time += 1
+
+        return time
+
+# Time Complexity: O(n * log(n)) -> Conduct heap operations on a heap of up to n unique tasks.
+# Space Complexity: O(2 * n) -> O(n) -> Store up to n tasks on heap/queue data structures.
