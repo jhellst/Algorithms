@@ -61,3 +61,28 @@ class Solution:
 
 # Time Complexity: O(n*log(n)) -> Visit every interval in array after sorting.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        # Greedy solution. We want to find out how many intervals would get merged.
+
+        intervals.sort()
+        count = 0
+
+        prev_end = intervals[0][1]
+
+        for start, end in intervals[1:]: # Determine if we merge cur_interval or continue.
+            if start >= prev_end: # If no overlap.
+                prev_end = end
+            else: # Some overlap.
+                prev_end = min(end, prev_end)
+                count += 1
+
+        return count
+
+# Time Complexity: O(n) + O(log(n)) -> O(n) -> Visit every interval once.
+# Space Complexity: O(1) -> No additional storage used.
