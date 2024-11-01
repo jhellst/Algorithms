@@ -47,3 +47,37 @@ class Solution:
 
 # Time Complexity: O(n^2) -> Double-nested loop through each index of s.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        # We want to count the number of palindromic substrings in a string.
+        #   - From each index, we want to count the # of substrings expanding (from that center index) that are palindromes.
+
+        res = 0
+
+        # First, check palindromes of odd length at each index.
+        for i in range(len(s)):
+            count = 0
+            first, second = i, i
+            while (first - count) >= 0 and (second + count) < len(s) and s[first - count] == s[second + count]:
+                count += 1
+            # Now, record the number of palindromes.
+            res += count
+
+        # Then, check palindromes of odd even at each valid index.
+        for i in range(len(s) - 1):
+            count = 0
+            first, second = i, i + 1
+            while (first - count) >= 0 and (second + count) < len(s) and s[first - count] == s[second + count]:
+                count += 1
+            # Now, record the number of palindromes.
+            res += count
+
+        return res
+
+# Time Complexity: O(n^2) -> Loop through every index and potentially check every valid index expanding from that index.
+# Space Complexity: O(1) -> No additional storage used.
