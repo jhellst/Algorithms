@@ -52,3 +52,40 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse string, visiting each char once.
 # Space Complexity: O(n) -> Store up to every character on the stack.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        # We can only construct nested brackets in certain cases.
+        #   - We can't ever have more closed parens (at any point as we traverse left -> right).
+        #   - We have to "close" every paren -> open_count == closed_count
+        # Use a stack to store the "nesting" of the parens, then process the string s.
+        #   - Pop from the stack when a paren is "closed".
+        #   - In the end, return True if open_count == closed_count AND the stack is empty.
+
+        open_count, closed_count = 0, 0
+        parens = {")": "(", "]": "[", "}": "{"} # Matches closing to opening parentheses.
+
+        stack = []
+        for char in s:
+            if char in parens: # If char is a closed paren.
+                if open_count == closed_count:
+                    return False
+                if stack and stack[-1] == parens[char]:
+                    stack.pop()
+
+                closed_count += 1
+            else: # Char is an open paren.
+                open_count += 1
+                stack.append(char)
+
+        if not stack:
+            return True
+        return False
+
+# Time Complexity: O(n) -> Visit each char in s one time.
+# Space Complexity: O(n) -> Store up to n items on a stack.
