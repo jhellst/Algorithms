@@ -78,3 +78,35 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> Sort the intervals array and visit each interval once.
 # Space Complexity: O(1) -> No additional storage used other than res.
+
+
+
+
+# 2nd Solution:
+
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # Merge the intervals.
+        #   - Start with first interval, then "process" each consecutive interval.
+        #   - Need to sort intervals, first.
+
+        intervals.sort()
+        res = []
+
+        cur_start, cur_end = intervals[0]
+
+        for start, end in intervals[1:]:
+            if start > cur_end: # If next interval doesn't overlap -> Append current interval and continue.
+                res.append([cur_start, cur_end])
+                cur_start, cur_end = start, end
+            else: # Some overlap of the intervals, so we need to merge them.
+                cur_start = min(cur_start, start)
+                cur_end = max(cur_end, end)
+
+        if cur_start != None:
+            res.append([cur_start, cur_end])
+        return res
+
+# Time Complexity: O(n + log(n)) -> Sort array of length n, then traverse the array once.
+# Space Complexity: O(1) -> No additional storage space used.
