@@ -47,3 +47,26 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass with 2 pointers.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        # Sorted array -> we need to converge on a sum that matches.
+        #   - There is guaranteed exactly 1 solution.
+        #   - 1-indexed (so need to add 1 to indexes in returned value)
+
+        # Solution using 2 pointers. We start at both ends with a cur_sum, then increment from left if sum is too low and from right if sum is too high.
+
+        left, right = 0, len(numbers) - 1
+        while True:
+            cur_sum = numbers[left] + numbers[right]
+            if cur_sum == target:
+                return [left + 1, right + 1]
+            elif cur_sum > target:
+                right -= 1
+            else:
+                left += 1
+
+# Time Complexity: O(n) -> Traverse each number up to once.
+# Space Complexity: O(n) -> No additional storage used.
