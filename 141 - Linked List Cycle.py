@@ -51,3 +51,29 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse linked list with slow and fast pointers.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+# 2nd Solution:
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        # Determine if there's a cycle in the linked list.
+        #   - We can either store seen nodes in a set/dict OR we can use fast/slow pointers and compare them.
+
+        dummy = ListNode(0, head)
+        slow, fast = dummy, head
+        while fast and fast.next:
+            if slow == fast:
+                return True
+            slow = slow.next
+            fast = fast.next.next
+        return False
+
+# Time Complexity: O(n) -> Traverse linked list to find node.
+# Space Complexity: O(1) -> No additional storage space used.
