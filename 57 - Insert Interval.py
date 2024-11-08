@@ -70,3 +70,38 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse intervals array 1 time.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        # We start with an unsorted array of non-overlapping intervals.
+        # Want to add the new interval and merge, if necessary.
+        #   - Traverse sorted intervals array
+        #       -> Append cur_interval if it's been passed and assign new cur_interval
+        #       -> Otherwise, modify cur_interval to "merge" the two overlapping intervals.
+        #   - As a final step, append the final cur_interval before returning res.
+
+        res = []
+        intervals.sort()
+
+        cur_interval = newInterval
+
+        for start, end in intervals:
+            if start > cur_interval[1]: # No overlap. cur_interval is before start and should be appended now.
+                res.append(cur_interval)
+                cur_interval = [start, end]
+            elif end < cur_interval[0]: # No overlap. cur_interval is not reached yet.
+                res.append([start, end])
+            else: # Some overlap.
+                cur_interval = [min(start, cur_interval[0]), max(end, cur_interval[1])]
+
+        if cur_interval:
+            res.append(cur_interval)
+
+        return res
+
+# Time Complexity: O(n) -> Traverse intervals array once.
+# Space Complexity: O(1) -> No additional storage used.
