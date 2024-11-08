@@ -34,3 +34,28 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of nums array.
 # Space Complexity: O(n) -> Store up to every number in nums in hashmap.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # Need to find target sum from 2 values in nums array.
+        #   - We can use a hashmap (or sort and use 2-pointers).
+
+        # Process:
+        #   - Check to see if (target - num) is in the hashmap -> if it is, return the solution.
+        #   - Add num to the hashmap with its index as the stored value.
+        #   - Continue to process each value in nums.
+
+        hash_map = {} # val:index
+
+        for i, num in enumerate(nums):
+            if (target - num) in hash_map:
+                return [i, hash_map[target - num]]
+            hash_map[num] = i
+
+# Time Complexity: O(n) -> Traverse nums array once (at most).
+# Space Complexity: O(n) -> Store every value in nums in hash_map.
