@@ -44,3 +44,18 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse entire nums array 1 time.
 # Space Complexity: O(1) -> No additional Storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def lengthOfLastWord(self, s: str) -> int:
+        # Return the length of the last word.
+        #   - First split the string by spaces, then return the length of the final element in the array.
+
+        s = s.strip(" ")
+        return len(s.split(" ")[-1])
+
+# Time Complexity: O(n) -> Split the string, then return the length of the final element.
+# Space Complexity: O(1) -> No additional storage used.
