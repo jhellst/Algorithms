@@ -70,3 +70,32 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit (and reverse) every node in the binary tree exactly once.
 # Space Complexity: O(h) -> O(n) -> Call stack contains one call for each level in the tree -> In worst case, h == n.
+
+
+
+
+# 3rd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        # Reverse the subtree of every node in the binary tree.
+        #   - DFS-style solution -> at each node, set node.left = right and node.right = left.
+        #       -> Then, return the node.
+
+        def dfs(node):
+            if not node:
+                return None
+            left, right = dfs(node.left), dfs(node.right)
+            node.left, node.right = right, left
+            return node
+
+        return dfs(root)
+
+# Time Complexity: O(n) -> Visit every node in the binary tree.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the call stack up to height of tree. In worst case, h == n.
