@@ -50,3 +50,40 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node of the tree once.
 # Space Complexity: O(h) -> O(n) -> Store on deque one node for each level of tree. In worst case, h == n.
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        # For each level of the binary tree, append (to res) the average of the values on that level.
+        #   - BFS-style traversal -> we'll use a deque and traverse and average, level-by-level.
+
+        res = []
+        q = deque([root])
+
+        while q:
+            qLen = len(q)
+            cur_sum = 0
+            for i in range(qLen):
+                cur_node = q.popleft()
+                if cur_node:
+                    cur_sum += cur_node.val
+                if cur_node.left:
+                    q.append(cur_node.left)
+                if cur_node.right:
+                    q.append(cur_node.right)
+
+            cur_average = cur_sum / qLen
+            res.append(cur_average)
+
+        return res
+
+# Time Complexity: O(n) -> Visit every node in binary tree.
+# Space Complexity: O(w) -> O(n) -> Store nodes on deque equal to width of tree. In worst case, w == n.
