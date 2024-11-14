@@ -45,3 +45,34 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of array with 2 pointers.
 # Space Complexity: O(m) -> Store up to every unique char in hashmap (represented by m).
+
+
+# 2nd Solution:
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # Need to find the longest substring where no characters are duplicated.
+        #   - Solution uses a hashmap/counter with a sliding-window.
+        #       -> Increment the counter until we have a duplicate character, then decrement until there is no duplicate.
+        #       -> Whenever we have a valid substring, compare it to res.
+
+
+        hashmap = {}
+        res = 0
+        left = 0
+        right = 0
+
+        while right < len(s):
+            # 1) Add s[right].
+            hashmap[s[right]] = hashmap.get(s[right], 0) + 1
+            while hashmap[s[right]] > 1 and left < right:
+                hashmap[s[left]] -= 1
+                left += 1
+            res = max(res, right - left + 1)
+
+            right += 1
+
+        return res
+
+# Time Complexity: O(n) -> Traverse the string with 2-pointers.
+# Space Complexity: O(n) -> Store chars in a hashmap of max_size == n.
