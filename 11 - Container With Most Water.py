@@ -72,3 +72,30 @@ def max_area(height):
 
 # Time Complexity: O(n)
 # Space Complexity: O(1)
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        # We want to find the max volume that can be stored between ANY 2 lines.
+        # Greedy. Start with left/right pointers at both ends of the array, move inward from the shorter side until the points meet.
+
+        left, right = 0, len(height) - 1
+        res = 0
+
+        while left < right:
+            left_height, right_height = height[left], height[right]
+            volume = (right - left) * min(left_height, right_height)
+            res = max(res, volume)
+
+            if left_height > right_height:
+                right -= 1
+            else:
+                left += 1
+
+        return res
+
+# Time Complexity: O(n) -> Traverse the array with 2 pointers, visiting each value once.
+# Space Complexity: O(1) -> No additional storage used.
