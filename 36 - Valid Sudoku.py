@@ -100,3 +100,57 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every cell in 2D array exactly once.
 # Space Complexity: O(3n) -> O(n) -> Store every value in a set exactly 3 times (if != ".").
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        # A valid board needs to meet all of the requirements for a valid Sudoku game:
+        #   - Each square has no repeat values.
+        #   - Each row has no repeat values.
+        #   - Each column has no repeat values.
+        #   - Ignoring final rule that diagonals are also checked.
+
+        # Use sets to check each "grouping" for duplicate values.
+        # As we traverse each cell, we'll add to all 3 groupings to check validity.
+        rows = {} # row: set(nums)
+        cols = {} # col: set(nums)
+        squares = {} # (row // 3, col // 3): set(nums)
+
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+
+                cur_val = board[row][col]
+                if cur_val != ".":
+
+                    if row in rows:
+                        if cur_val in rows[row]:
+                            return False
+                        rows[row].add(cur_val)
+                    else:
+                        rows[row] = set()
+                        rows[row].add(cur_val)
+
+                    if col in cols:
+                        if cur_val in cols[col]:
+                            return False
+                        cols[col].add(cur_val)
+                    else:
+                        cols[col] = set()
+                        cols[col].add(cur_val)
+
+                    square_indices = (row // 3, col // 3)
+                    if square_indices in squares:
+                        if cur_val in squares[square_indices]:
+                            return False
+                        squares[square_indices].add(cur_val)
+                    else:
+                        squares[square_indices] = set()
+                        squares[square_indices].add(cur_val)
+
+        return True
+
+# Time Complexity: O(n * m) -> Visit every cell in the matrix once.
+# Space Complexity: O(3 * n * m) -> O(n * m) -> Store values in dictionaries -> In worst case, each cell's value will be stored 3 times.
