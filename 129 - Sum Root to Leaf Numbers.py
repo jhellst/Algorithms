@@ -58,3 +58,35 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node 1 time.
 # Space Complexity: O(n) -> Stack may contain up to 1 call to dfs for every level of tree (which could be n in worst-case).
+
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        # Starting from the root, sum the "numbers" as denoted from root to leaf.
+        # DFS from root node to its leaves -> once we reach a leaf, we can add that total to res.
+
+        self.res = 0
+        def dfs(node, cur_val):
+            if not node:
+                return 0
+            cur_val = cur_val * 10 + node.val
+            if not node.left and not node.right: # We're at a leaf node -> Add cur_val to res.
+                self.res += cur_val
+            else:
+                dfs(node.left, cur_val)
+                dfs(node.right, cur_val)
+
+        dfs(root, 0)
+        return self.res
+
+# Time Complexity: O(n) -> Visit every node in binary tree once.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack equal to height of tree. In worst case, h == n.
