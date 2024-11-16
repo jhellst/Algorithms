@@ -40,3 +40,31 @@ class Solution:
 
 # Time Complexity: O(n) -> Loop through the range of (2, n).
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        # Simple dynamic programming -> we'll keep track of the number of different ways that we can reach each step.
+        #   - Increment the "steps" 2 at a time.
+        #   - Once we're finished, the variables "one" and "two" can be added to get the final result.
+
+        if n == 0:
+            return 0
+        if n == 1:
+            return 1
+
+        one, two = 1, 1
+
+        for i in range(2, n):
+            tmp_one = one
+            one = one + two
+            two = tmp_one
+
+        return one + two
+
+# Time Complexity: O(n) -> Traverse range from 2 to n one time.
+# Space Complexity: O(1) -> No additional storage space used.
