@@ -86,3 +86,44 @@ class Solution:
 
 # Time Complexity: O(n) -> In worst case, visit every node in the BST.
 # Space Complexity: O(h) -> O(n) -> Store calls on stack for every level of BST. In worst case, h == n.
+
+
+
+
+# 3rd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # Return the kth smallest value.
+        #   - We can use the definition of a BST to "traverse" the tree in-order.
+        #   - DFS-style traversal is appropriate here.
+        # We can travel to the lowest value in the tree (far left node) -> then, we can traverse back upwards.
+
+        count = 0
+        stack = []
+        cur_node = root
+
+        while cur_node or stack:
+
+            while cur_node: # Traverse to the bottom left leaf of the subtree (smallest value).
+                stack.append(cur_node)
+                cur_node = cur_node.left
+            cur_node = stack.pop() # Pop the lowest value in subtree here.
+
+            # We're at the lowest value in the current subtree.
+            count += 1
+            if count == k:
+                return cur_node.val
+
+            # Now we can traverse to the next lowest value node.
+            if cur_node:
+                cur_node = cur_node.right
+
+# Time Complexity: O(n) -> In worst case, visit every node in the BST.
+# Space Complexity: O(h) -> O(n) -> Store nodes on the stack equal to height of tree. In worst case, h == n.
