@@ -50,3 +50,59 @@ class Solution:
 
 # Time Complexity: O(3n) -> O(n) -> Traverse nums array 3 times.
 # Space Complexity: O(2n) -> O(n) -> Store n values in 2 separate arrays (prefixes and postfixes).
+
+
+
+
+# 2nd Solution - Optimal Solution with O(1) Space:
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # Important Takeaway: The occurence of zeroes in the array makes things much more complicated for a single-pass.
+        #   - To simplify, we can first check for the count of zeroes in the array.
+
+        # A few different main cases:
+        #   1) No zeroes in array -> All products can be calculated in one-pass.
+        #   2) 1 zero in array -> All products are 0, except for the index where 0 was initially (product of all other nums).
+        #   3) Multiple zeroes in array -> Every product in the array is 0.
+
+        num_zeroes = nums.count(0)
+
+        if num_zeroes >= 2: # Answer will be all zeroes.
+            return [0] * len(nums)
+
+        if num_zeroes == 0: # We can process the array's product while traversing once.
+            res = []
+
+            cur_product = 1
+            for num in nums:
+                cur_product *= num
+            # Now cur_product is the product of all numbers -> value at index 0.
+
+            prev = None
+            for num in nums:
+                if prev:
+                    cur_product *= prev
+                cur_product = cur_product // num
+                res.append(cur_product)
+
+                prev = num
+
+            return res
+
+        if num_zeroes == 1: # The 0 will be replaced with the final product and every other number will be 0.
+
+            cur_product = 1
+            zero_index = None
+            for i, num in enumerate(nums):
+                if num == 0:
+                    zero_index = i
+                else:
+                    cur_product *= num
+
+            res = [0] * len(nums)
+            res[zero_index] = cur_product
+            return res
+
+# Time Complexity: O(n) -> Multiple passes of array of length n.
+# Space Complexity: O(1) -> No additional storage space used.
