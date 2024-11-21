@@ -37,3 +37,32 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of every number in array.
 # Space Complexity: O(n) -> Store up to every number once in a set.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        # Return the length of the longest consecutive sequence.
+        #   - Use a set to store all nums.
+        #   - Then, iterate through each num in nums, checking for the existence of a consecutive sequence (and incrementing accordingly).
+        #   - Note: We can ignore evaluating any nums where num - 1 is is the set.
+
+        if not nums:
+            return 0
+
+        max_length = 1
+
+        num_set = set(nums)
+        for num in num_set:
+            if (num - 1) not in num_set:
+                cur_length = 1
+                while (num + cur_length) in num_set:
+                    cur_length += 1
+                    max_length = max(max_length, cur_length)
+
+        return max_length
+
+# Time Complexity: O(n) -> Convert nums array to a set of max_size = n. Then, visit every number in num_set once.
+# Space Complexity: O(n) -> Store every num in nums in num_set.
