@@ -48,3 +48,37 @@ class Solution:
 
 # Time Complexity: O( m * n ) -> Traversal of matrix, then second traversal to transform.
 # Space Complexity: O(m + n) -> Sets may hold every row and every column once.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        # For any row or column with a zero -> set every cell to 0.
+        #   - Simple idea: Use a dict/set data structure to store every row/col with a zero.
+
+        rows = set()
+        cols = set()
+
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                cur_val = matrix[row][col]
+                if cur_val == 0:
+                    rows.add(row)
+                    cols.add(col)
+
+        # Now, modify all rows/cols that contained a zero -> all cells will now be transformed to 0.
+        for row in rows:
+            for col in range(len(matrix[0])):
+                matrix[row][col] = 0
+        for col in cols:
+            for row in range(len(matrix)):
+                matrix[row][col] = 0
+
+# Time Complexity: O(n * m) -> Visit every cell in matrix once.
+# Space Complexity: O(n + m) -> Store in sets, in worst case will store every row and every column once.
