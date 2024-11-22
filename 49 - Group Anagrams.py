@@ -40,3 +40,32 @@ class Solution:
 
 # Time Complexity: O(nk * log(k)) -> Traverse each s in strs, and sort each string/store in dict. n = len(strs) and k = max word length.
 # Space Complexity: O(nk) -> Store every string in hashmap.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # Group the anagrams together in lists within res.
+        # Use a dict -> key: value -> char_counter:[word1, word2, ...]
+        # Note: No need to use a dict -> we can simply sort the numbers and use that value as the key.
+
+        res = []
+        d = {}
+
+        for word in strs:
+            sorted_word = "".join(sorted(word))
+
+            if sorted_word in d:
+                d[sorted_word].append(word)
+            else:
+                d[sorted_word] = [word]
+
+        for key in d:
+            res.append(d[key])
+
+        return res
+
+# Time Complexity: O(n * k * log(k)) -> Visit every word in strs array and sort/store in dict, then iterate through each key in d and append to res.
+# Space Complexity: O(n) -> Store n words in dictionary.
