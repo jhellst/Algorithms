@@ -39,3 +39,26 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of prices array.
 # Space Complexity: O(1) -> No additional storage.
+
+
+
+
+# Solution 2:
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # Greedy solution.
+        #   - As we traverse prices array -> Continue to record the min_price.
+        #   - At each price, calculate sale price against the current max.
+
+        max_profit = 0
+        min_price = prices[0]
+
+        for price in prices[1:]:
+            max_profit = max(max_profit, price - min_price)
+            min_price = min(min_price, price)
+
+        return max_profit
+
+# Time Complexity: O(n) -> Single pass of prices array.
+# Space Complexity: O(1) -> No additional storage space used.
