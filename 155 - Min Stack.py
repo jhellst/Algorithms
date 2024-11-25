@@ -69,3 +69,43 @@ class MinStack:
 # obj.pop()
 # param_3 = obj.top()
 # param_4 = obj.getMin()
+
+
+
+# Solution 2:
+
+class MinStack:
+
+    def __init__(self):
+        self.stack = []
+        self.mins = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if len(self.mins) == 0 or self.mins[-1] >= val:
+            self.mins.append(val)
+
+    def pop(self) -> None:
+        remove_val = self.stack.pop()
+        if self.mins[-1] == remove_val:
+            self.mins.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.mins[-1]
+
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+
+
+
+# Time Complexity: O(1) -> Every operation is just appending or popping a single item from 2 stacks.
+# Space Complexity: O(2 * n) -> O(n) -> In worst case, store every value once in self.stack and self.mins.
