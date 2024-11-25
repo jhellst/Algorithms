@@ -69,3 +69,32 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of array with 2 pointers from each end.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        # Greedy solution. Start with 2 pointers and increment inwards from the shorter side.
+        #   - Track max_height from each side and calculate volume_added based based on 1 * (max_height - cur_height).
+
+        volume_captured = 0
+
+        left, right = 0, len(height) - 1
+        max_left, max_right = height[left], height[right]
+        while left < right:
+            # Increment from the shorter side, to avoid "missing" any captured volume.
+            if height[left] < height[right]:
+                volume_captured += (max_left - height[left])
+                left += 1
+                max_left = max(max_left, height[left])
+            else:
+                volume_captured += (max_right - height[right])
+                right -= 1
+                max_right = max(max_right, height[right])
+
+        return volume_captured
+
+# Time Complexity: O(n) -> Traverse each item in height array one time.
+# Space Complexity: O(1) -> No additional storage used.
