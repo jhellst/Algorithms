@@ -35,3 +35,26 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> Heap operations after adding every value in nums to the heap.
 # Space Complexity: O(n + k) -> Place every value in nums on a heap. Create a counter with k unique elements.
+
+
+
+
+# Solution 2:
+
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # Return the k most frequent elements. We want to use a Counter and sort/heap. Heap is more efficient.
+
+        min_heap = [] # [count, val]
+        c = Counter(nums)
+
+        for num in c:
+            heapq.heappush(min_heap, [c[num], num]) # [count, val]
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+
+        return [num for count, num in min_heap]
+
+# Time Complexity: O(n + n * log(k)) -> O(n * log(k)) -> Create a Counter, then traverse every key in the Counter and conduct heap operations on a heap of length k.
+# Space Complexity: O(n + k) -> Store n elements in a Counter, and store k elements on a heap.
