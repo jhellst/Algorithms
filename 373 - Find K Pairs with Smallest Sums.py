@@ -43,3 +43,24 @@ class Solution:
             res.append(heapq.heappop(max_heap)[1])
 
         return res
+
+
+# 2nd Solution:
+
+class Solution:
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        # Find the k smallest pairs, in terms of total sum of the 2 numbers.
+        # Solution using a min_heap. Push [total_sum, [num1, num2]] to the heap.
+
+        max_heap = [] # [-total_sum, [num1, num2]]
+
+        for num1 in nums1:
+            for num2 in nums2:
+                heapq.heappush(max_heap, [-(num1 + num2), [num1, num2]])
+                if len(max_heap) > k:
+                    heapq.heappop(max_heap)
+
+        return [pair for total_sum, pair in max_heap]
+
+# Time Complexity: O(n * m * log(k)) -> Iterate through every combination between nums1 and nums2 and perform heap operations of a heap of length k.
+# Space Complexity: O(k) -> Store up to k values on a heap.
