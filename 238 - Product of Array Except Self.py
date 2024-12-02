@@ -106,3 +106,53 @@ class Solution:
 
 # Time Complexity: O(n) -> Multiple passes of array of length n.
 # Space Complexity: O(1) -> No additional storage space used.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+
+        # We can use a prefix_product as we traverse the array.
+        # Important restriction: If there are zeroes, we need more logic to prevent dividing by zero.
+        #   - We can use zero_count to inform how we'll interact with this array.
+
+        res = [0] * len(nums)
+        zero_count = nums.count(0)
+
+        if zero_count == 0: # Normal processing with cur_product tracked.
+
+            cur_product = 1
+            for num in nums:
+                cur_product *= num
+            # Now we have cur_product for every num in nums. Start back at first num, processing the cur_product with multiplication/division.
+
+            for i, num in enumerate(nums):
+                cur_product = cur_product // num
+                res[i] = cur_product
+                cur_product *= num
+
+            return res
+
+        elif zero_count == 1:
+            # Every space will be zero, and the index with 0 initially will be the product of every other number in the array.
+            cur_product = 1
+            for num in nums:
+                if num != 0:
+                    cur_product *= num
+
+            for i, num in enumerate(nums):
+                if num == 0:
+                    nums[i] = cur_product
+                else:
+                    nums[i] = 0
+
+            return nums
+
+        else: # Multiple zeroes in array, all elements will be zero.
+            return [0] * len(nums)
+
+
+# Time Complexity: O(n) -> Traverse nums array multiple times.
+# Space Complexity: O(1) -> No additional storage used.
