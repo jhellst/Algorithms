@@ -63,3 +63,25 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse nums array once.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # Greedy-style solution (Kadane's Algorithm?) - we can reset the sum to 0 whenever it is < 0.
+
+        cur_sum = nums[0]
+        max_sum = nums[0]
+
+        for num in nums[1:]:
+            if cur_sum < 0:
+                cur_sum = 0
+            cur_sum += num
+            max_sum = max(max_sum, cur_sum)
+
+        return max_sum
+
+# Time Complexity: O(n) -> Single pass of nums array.
+# Space Complexity: O(1) -> No additional storage space used.
