@@ -127,3 +127,34 @@ class Solution:
 
 # Time Complexity: O(n) -> In worst case, visit every node in the BST.
 # Space Complexity: O(h) -> O(n) -> Store nodes on the stack equal to height of tree. In worst case, h == n.
+
+
+
+# 4th Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # Iterate through the BST using a stack. Traverse to the lowest value in the BST, storing greater-value nodes on the stack.
+
+        stack = []
+        cur_node = root
+
+        while cur_node or stack:
+            while cur_node:
+                stack.append(cur_node)
+                cur_node = cur_node.left
+            cur_node = stack.pop() # cur_node is now at lowest (local) value.
+            k -= 1
+            if k == 0:
+                return cur_node.val
+
+            cur_node = cur_node.right # Next greatest node is cur_node.right.
+
+# Time Complexity: O(n) -> Visit each node in BST once.
+# Space Complexity: O(h) -> O(n) -> Store nodes on stack up to height of BST. In worst case, h == n.
