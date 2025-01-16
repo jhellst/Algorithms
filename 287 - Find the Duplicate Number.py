@@ -43,3 +43,23 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> We sort nums, and then traverse the entire array once in worst case.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        # Determine which number is repeated.
+        #   - Use a set, storing vals when we reach that node. If that val exists in the set, return it.
+
+        seen = set()
+
+        for num in nums:
+            if num in seen:
+                return num
+            seen.add(num)
+
+
+# Time Complexity: O(n) -> Visit each node 1 time in worst case.
+# Space Complexity: O(n) -> Store up to n values in set.
