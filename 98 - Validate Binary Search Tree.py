@@ -80,3 +80,36 @@ class Solution:
 
 # Time Complexity: O(n) -> In worst case, visit every node in tree once.
 # Space Complexity: O(h) -> O(n) -> Call stack may include a function call for every level of the tree. In worst case, h == n.
+
+
+
+
+
+# 3rd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        # Recursively visit each node, determining if it is "valid" based on basic BST definition.
+        #   - Left value (if node exists) must be lower than entirety of above range.
+        #   - Right value (if node exists) must be higher than entirety of above range.
+
+        def is_valid_subtree(node, min_val, max_val):
+            if not node:
+                return True
+            if node.val <= min_val or node.val >= max_val:
+                return False
+            # Recurse into subnodes -> reset min/max range when calling function.
+            #   - Left -> Reduce max_val
+            #   - Right -> Increase min_val
+            return is_valid_subtree(node.left, min_val, min(max_val, node.val)) and is_valid_subtree(node.right, max(min_val, node.val), max_val)
+
+        return is_valid_subtree(root, -inf, inf)
+
+# Time Complexity: O(n) -> In worst case, visit each node once.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack equal to height of the tree. In worst case, h == n.
