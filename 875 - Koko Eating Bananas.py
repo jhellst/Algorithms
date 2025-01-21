@@ -52,6 +52,36 @@ class Solution:
         return res
 
 
-
 # Time Complexity: O( n * log(m) ) -> Binary search (O(log(m))) of rates from 1 to m. For each binary search, need to traverse entire piles array ( O(n) ) to calculate timeTaken.
 # Space Complexity: O(1) -> No additional storage used (Besides hoursTaken varible ( O(1)) ).
+
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        # Binary search solution. We want to search to find the minimum eating rate K that will still "eat" all of the bananas in time.
+
+        min_rate = max(piles)
+        left, right = 1, max(piles)
+        total_bananas = sum(piles)
+
+        while left <= right:
+            mid = (left + right) // 2
+
+            hours_taken = 0
+            for pile in piles:
+                hours_taken += math.ceil(pile / mid)
+            if hours_taken > h:
+                left = mid + 1
+            else:
+                min_rate = min(min_rate, mid)
+                right = mid - 1
+
+        return min_rate
+
+# Time Complexity: O(n * log(m)) -> Binary search of array of length n, for range of 1 to m (max value of piles).
+# Space Complexity: O(1) -> No additional storage used.
