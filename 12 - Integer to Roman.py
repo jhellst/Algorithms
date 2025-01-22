@@ -111,3 +111,62 @@ class Solution:
                     res += "I"
                     num -= 1
         return res
+
+
+
+# Solution #2:
+
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        # Convert an integer into a roman numeral.
+        #   - Process from left to right while decreasing value by numerals added.
+
+        cur_value = num
+        res = ""
+
+        while cur_value > 0:
+            if cur_value >= 1000:
+                cur_value -= 1000
+                res += "M"
+            elif cur_value >= 900:
+                cur_value -= 900
+                res += "CM"
+            elif cur_value >= 500:
+                cur_value -= 500
+                res += "D"
+            elif cur_value >= 400:
+                cur_value -= 400
+                res += "CD"
+            elif cur_value >= 100:
+                cur_value -= 100
+                res += "C"
+            elif cur_value >= 90:
+                cur_value -= 90
+                res += "XC"
+            elif cur_value >= 50:
+                cur_value -= 50
+                res += "L"
+            elif cur_value >= 40:
+                cur_value -= 40
+                res += "XL"
+            elif cur_value >= 10:
+                cur_value -= 10
+                res += "X"
+            elif cur_value >= 9:
+                cur_value -= 9
+                res += "IX"
+            elif cur_value >= 5:
+                cur_value -= 5
+                res += "V"
+            elif cur_value >= 4:
+                cur_value -= 4
+                res += "IV"
+            elif cur_value >= 0:
+                cur_value -= 1
+                res += "I"
+
+        return res
+
+
+# Time Complexity: O(1) -> Finite set of roman numerals to be used (max is apparently 15 characters).
+# Space Complexity: O(1) -> No additional storage used.
