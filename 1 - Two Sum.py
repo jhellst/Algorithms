@@ -59,3 +59,21 @@ class Solution:
 
 # Time Complexity: O(n) -> Traverse nums array once (at most).
 # Space Complexity: O(n) -> Store every value in nums in hash_map.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # Find the indices of the 2 values that sum to target. There is exactly 1 answer.
+        # Use a hashmap to store value:index. If (target - cur_val) is in the hashmap, we have a match!
+
+        hashmap = {} # val:index
+        for i, val in enumerate(nums):
+            if (target - val) in hashmap:
+                return [i, hashmap[target - val]]
+            hashmap[val] = i
+
+# Time Complexity: O(n) -> In worst case, visit every index one time.
+# Space Complexity: O(n) -> In worst case, store every val:index pair in a hashmap.
