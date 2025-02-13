@@ -33,3 +33,23 @@ class Solution:
 
 # Time Complexity: O(n) -> Single pass of array.
 # Space Complexity: O(n) -> Store up to every value in set 1 time.
+
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        # Use a set. If cur_num is already in the set, return True.
+
+        num_set = set()
+        for num in nums:
+            if num in num_set:
+                return True
+            num_set.add(num)
+
+        return False
+
+# Time Complexity: O(n) -> In worst case, visit every value in nums one time.
+# Space Complexity: O(n) -> In worst case, store every value in nums in a set.
