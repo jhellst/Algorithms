@@ -56,3 +56,40 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node exactly 1 time.
 # Space Complexity: O(w) -> curLevel array used to store each node on a current level.
+
+
+
+# 2nd Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        # Level-order traversal -> After each level is "collected" append the final item stored on the queue for that level.
+        # Use a deque.
+
+        q = deque()
+        q.append(root)
+        res = []
+
+        while q:
+            qlen = len(q)
+            cur_level = []
+            for i in range(qlen):
+                cur_node = q.popleft()
+                if cur_node:
+                    cur_level.append(cur_node.val)
+                    q.append(cur_node.left)
+                    q.append(cur_node.right)
+
+            if cur_level:
+                res.append(cur_level[-1])
+
+        return res
+
+# Time Complexity: O(n) -> Visit every node in binary tree.
+# Space Complexity: O(h) -> O(n) -> Store nodes on deque equal to height of tree. In worst case, h == n.
