@@ -86,3 +86,30 @@ class Solution:
 
 # Time Complexity: O(n) + O(log(n)) -> O(n) -> Visit every interval once.
 # Space Complexity: O(1) -> No additional storage used.
+
+
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        # Find the minimum # of intervals that you need to remove to make them non-overlapping.
+        # Greedy -> Sort the intervals, then remove every interval that would theoretically overlap.
+
+        intervals.sort()
+        prev_end = intervals[0][1]
+        res = 0
+
+        for start, end in intervals[1:]:
+            if start >= prev_end: # No overlap.
+                prev_end = end
+            else: # Some overlap.
+                prev_end = min(end, prev_end)
+                res += 1
+
+        return res
+
+# Time Complexity: O(n * log(n)) -> Sort intervals and traverse array once.
+# Space Complexity: O(1) -> No additional storage space used.
