@@ -66,3 +66,27 @@ class Solution:
 
 # Time Complexity: O(n) -> Convert nums array to a set of max_size = n. Then, visit every number in num_set once.
 # Space Complexity: O(n) -> Store every num in nums in num_set.
+
+
+
+# 2nd Solution:
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        # We need to find length of the longest consecutive sequence within the array. Numbers can be in any order, as long as they are sequential in value.
+        # Store all values in nums into a set. Then, check each value for length of sequence. If val - 1 exists in num_set, we can ignore it (we'll count from the beginning of the sequence).
+
+        num_set = set(nums)
+        max_length = 0
+
+        for num in num_set:
+            if (num - 1) not in num_set:
+                cur_length = 1
+                while (num + cur_length) in num_set:
+                    cur_length += 1
+                max_length = max(max_length, cur_length)
+
+        return max_length
+
+# Time Complexity: O(n) -> Create set of size n, and loop through each value in num_set 1 time.
+# Space Complexity: O(n) -> Store n values in a set.
