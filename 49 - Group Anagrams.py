@@ -69,3 +69,32 @@ class Solution:
 
 # Time Complexity: O(n * k * log(k)) -> Visit every word in strs array and sort/store in dict, then iterate through each key in d and append to res.
 # Space Complexity: O(n) -> Store n words in dictionary.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # Group the anagrams of each word in strs.
+        #   - Anagrams have the same letters (and count of letters) in any order.
+
+        # First, create a hashmap with key:value represented by sorted_str:[str1, str2, ...]
+
+        hashmap = {} # sorted_str: [str1, str2, ...]
+        for string in strs:
+            sorted_str = "".join(sorted(string))
+            if sorted_str in hashmap:
+                hashmap[sorted_str].append(string)
+            else:
+                hashmap[sorted_str] = [string]
+
+
+        res = []
+        for key, val in hashmap.items():
+            res.append(val)
+
+        return res
+
+# Time Complexity: O(n * klog(k)) -> Loop through each string and sort/store in hashmap.
+# Space Complexity: O(n) -> Store up to n words in hashmap.
