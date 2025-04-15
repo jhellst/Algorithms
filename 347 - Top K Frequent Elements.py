@@ -81,3 +81,26 @@ class Solution:
 
 # Time Complexity: O(n * log(k)) -> Create a counter from every value in nums, and push/pop from heap of max size k.
 # Space Complexity: O(n + k) -> Store up to n items in a counter/dict, and store up to k items in a heap.
+
+
+
+# 4th Solution:
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # Create a counter with key: value = -> number: count
+        #   - Then, push to a heap (or sort).
+
+        c = Counter(nums)
+        min_heap = [] # [count, number]
+
+        for num in c:
+            count = c[num]
+            heapq.heappush(min_heap, [count, num])
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+
+        return [num for count, num in min_heap]
+
+# Time Complexity: O(n * log(K)) -> Loop through up to n items in nums (twice), and push each unique item to a heap of size k.
+# Space Complexity: O(n + k) -> Create a counter of length n, and create a min_heap of length k.
