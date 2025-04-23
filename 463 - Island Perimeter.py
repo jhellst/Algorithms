@@ -46,3 +46,43 @@ class Solution:
                         result -= 2
 
         return result
+
+
+# 2nd Solution:
+
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        # DFS-style solution.
+        # Key Details:
+        #   - Only 1 island total -> we can use this to construct logic to count perimeter.
+        #   - If 1) cell == 1, add perimeter.
+        #       -> 1 neighbor, add 3
+        #       -> 2 neighbors, add 2
+        #       -> 3 neighbors, add 1
+        #       -> 4 neighbors, add 0 (surrounded completely)
+
+        def calculate_perimeter(row, col):
+            perimeter_to_add = 4
+
+            if row > 0 and grid[row - 1][col] == 1:
+                perimeter_to_add -= 1
+            if row < len(grid) - 1 and grid[row + 1][col] == 1:
+                perimeter_to_add -= 1
+            if col > 0 and grid[row][col - 1] == 1:
+                perimeter_to_add -= 1
+            if col < len(grid[0]) - 1 and grid[row][col + 1] == 1:
+                perimeter_to_add -= 1
+            return perimeter_to_add
+
+        total_perimeter = 0
+
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                # If cell == 1, calculate perimeter to add (check up, down, left, right).
+                if grid[row][col] == 1:
+                    total_perimeter += calculate_perimeter(row, col)
+
+        return total_perimeter
+
+# Time Complexity: O(n * m) -> Visit every cell in grid once.
+# Space Complexity: O(1) -> No additional storage space used.
