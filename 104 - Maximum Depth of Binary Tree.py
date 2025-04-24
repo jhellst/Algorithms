@@ -101,3 +101,33 @@ class Solution:
 
 # Time Complexity: O(n) -> In worst case, visit every node in binary tree.
 # Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack up to height of tree. In worst case, h == n.
+
+
+
+
+
+# 5th Solution:
+
+# Notes:
+#   - DFS to each node in the binary tree, maintaining the height.
+#   - When we reach a leaf node, we can compare the height against max_height.
+
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+
+        self.max_depth = 0
+
+        def traverse_tree(cur_node, cur_height):
+            if not cur_node:
+                self.max_depth = max(self.max_depth, cur_height)
+            else:
+                cur_height += 1
+                traverse_tree(cur_node.left, cur_height)
+                traverse_tree(cur_node.right, cur_height)
+
+        traverse_tree(root, 0)
+
+        return self.max_depth
+
+# Time Complexity: O(n) -> Visit every node in binary tree once.
+# Space Complexity: O(h) -> O(h) -> In worst case, store recursive calls on the stack equal to height of tree. In worst case, h == n.
