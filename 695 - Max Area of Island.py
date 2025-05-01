@@ -36,7 +36,7 @@ class Solution:
             if grid[row][col] != 1:
                 return 0
             grid[row][col] = 0
-            return 1 + dfs(row + 1, col)+ dfs(row - 1, col) + dfs(row, col + 1) + dfs(row, col - 1)
+            return 1 + dfs(row + 1, col) + dfs(row - 1, col) + dfs(row, col + 1) + dfs(row, col - 1)
 
         for i in range(rows):
             for j in range(cols):
@@ -48,3 +48,31 @@ class Solution:
 
 # Time Complexity: O(m * n) -> Traverse the entire grid, visiting each cell once.
 # Space Complexity: O(L) -> L is size of largest island -> call stack may contain up to L calls for each cell in island.
+
+
+# Solution 2:
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        # Traverse the matrix, and for each unseen 1 -> DFS to capture all connected 1's.
+
+        seen = set()  # Contains (r, c) for each seen island
+        max_island_size = 0
+
+        def dfs(row, col):
+            if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]) or (row, col) in seen or grid[row][col] != 1:
+                return 0
+
+            # Case where island is an unvisited 1.
+            seen.add((row, col))
+            return 1 + dfs(row + 1, col) + dfs(row - 1, col) + dfs(row, col + 1) + dfs(row, col - 1)
+
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                cur_island_size = dfs(row, col)
+                max_island_size = max(max_island_size, cur_island_size)
+
+        return max_island_size
+
+# Time Complexity: O(n * m) -> Traverse entire grid and visit each cell exactly one time.
+# Space Complexity: O(n * m) -> In seen set, store all coordinates of visited island cells. In worst case, every cell is an island.
