@@ -24,7 +24,6 @@
 #     The tree is guaranteed to be complete.
 
 
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -52,3 +51,27 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node in the binary tree once.
 # Space Complexity: O(log(n)) -> Store log(n) nodes on stack.
+
+
+# Solution 2:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        # Count the number of nodes in the binary tree and return it.
+        # Recursive solution -> DFS-style traversal to reach (and count) every node.
+
+        def dfs(node):
+            if not node:
+                return 0
+            return 1 + dfs(node.left) + dfs(node.right)
+
+        return dfs(root)
+
+# Time Complexity: O(n) -> Visit every node in the binary tree once.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack. In worst case, h == n.
