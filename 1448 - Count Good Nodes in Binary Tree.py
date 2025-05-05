@@ -40,7 +40,7 @@ class Solution:
         # We want to DFS the entire tree. At each node, we want to evaluate if it is a "good" node -> if no nodes from root to node have greater values.
 
         res = 0
-        stack = [[root, root.val]] # [node, maxVal]
+        stack = [[root, root.val]]  # [node, maxVal]
 
         while stack:
             curNode, curMax = stack.pop()
@@ -69,12 +69,11 @@ class Solution:
         def dfs(node, maxVal):
             if not node:
                 return
-            if node.val >= maxVal: # Node.val is valid in chain
+            if node.val >= maxVal:  # Node.val is valid in chain
                 self.res += 1
 
             dfs(node.left, max(maxVal, node.val))
             dfs(node.right, max(maxVal, node.val))
-
 
         dfs(root, root.val)
         return self.res
@@ -114,8 +113,6 @@ class Solution:
 # Space Complexity: O(h) -> O(n) -> Store recursive function calls on stack up to height of tree. In worst case, h == n.
 
 
-
-
 # 3rd Solution:
 
 
@@ -134,9 +131,10 @@ class Solution:
         self.res = 0
 
         max_val = root.val
+
         def find_good_nodes(node, max_val):
             if node:
-                if node.val >= max_val: # Check if current node is a good node.
+                if node.val >= max_val:  # Check if current node is a good node.
                     self.res += 1
                     max_val = max(max_val, node.val)
 
@@ -149,3 +147,29 @@ class Solution:
 
 # Time Complexity: O(n) -> Visit every node once.
 # Space Complexity: O(h) -> O(n) -> Recursive calls stored on stack for every level of tree. In worst case, h == n.
+
+
+# 4th Solution:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        # Recursive solution. As we traverse deeper into the tree, the max_val will be re-calculated and passed down.
+
+        def dfs(node, max_val):
+            if not node:
+                return 0
+
+            if node.val >= max_val:
+                return 1 + dfs(node.left, max(max_val, node.val)) + dfs(node.right, max(max_val, node.val))
+            return dfs(node.left, max(max_val, node.val)) + dfs(node.right, max(max_val, node.val))
+
+        return dfs(root, root.val)
+
+# Time Complexity: O(n) -> Visit each node once.
+# Space Complexity: O(h) -> O(n) -> Store recursive calls on the stack equal to height of tree. In worst case, h == n.
