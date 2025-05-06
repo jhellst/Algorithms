@@ -39,7 +39,8 @@ class Solution:
         count = 0
 
         def dfs(row, col):
-            if row >= 0 and col >= 0 and row < len(grid) and col < len(grid[0]) and grid[row][col] == "1": # Valid square and value is "1".
+            # Valid square and value is "1".
+            if row >= 0 and col >= 0 and row < len(grid) and col < len(grid[0]) and grid[row][col] == "1":
                 grid[row][col] = "0"
                 dfs(row + 1, col)
                 dfs(row - 1, col)
@@ -57,3 +58,33 @@ class Solution:
 
 # Time Complexity: O(n * m) -> Visit every cell at most 1 time.
 # Space Complexity: O(1) -> No additional storage.
+
+
+# 2nd Solution:
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        # Return the number of islands in the grid.
+        # DFS-style solution -> as we visit land, we can immediately transform it to a "0" to avoid re-counting.
+
+        def dfs(row, col):
+            if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]) or grid[row][col] == "0":
+                return
+            grid[row][col] = "0"
+            dfs(row + 1, col)
+            dfs(row - 1, col)
+            dfs(row, col + 1)
+            dfs(row, col - 1)
+
+        num_islands = 0
+
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col] == "1":
+                    num_islands += 1
+                    dfs(row, col)
+
+        return num_islands
+
+# Time Complexity: O(n * m) -> Visit each cell in 2D array once.
+# Space Complexity: O(n * m) -> Store recursive calls on stack equal to # of "land" cells.
