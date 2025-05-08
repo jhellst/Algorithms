@@ -23,7 +23,8 @@ class Solution:
         # Given a list of intervals (non-sorted), merge all overlaps and return the final list of intervals.
         intervals.sort()
         curStart, curEnd = intervals[0]
-        res = [] # Contains intervals that have already been processed and added.
+        # Contains intervals that have already been processed and added.
+        res = []
 
         for start, end in intervals[1:]:
             # Logic to determine if it overlaps with the currently stored interval.
@@ -33,22 +34,21 @@ class Solution:
                 curStart, curEnd = start, end
             elif end < curStart:
                 res.append([start, end])
-            else: # Some overlap. Combine the intervals and reassign curStart, curEnd to match the newly merged interval.
+            else:  # Some overlap. Combine the intervals and reassign curStart, curEnd to match the newly merged interval.
                 curStart, curEnd = min(start, curStart), max(end, curEnd)
 
-        res.append([curStart, curEnd]) # Append final interval.
+        res.append([curStart, curEnd])  # Append final interval.
         return res
 
 # Time Complexity: O(n + n * log(n)) -> O(n * log(n)) -> Sort intervals array of length n, then single pass of intervals array.
 # Space Complexity: O(1) -> No additional storage used.
 
 
-
 # 2nd Solution:
 
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-                # Merge the intervals.
+        # Merge the intervals.
         #   - Sort the intervals
         #   - Then, merge any overlapping intervals as we traverse the array.
         #   - There will be a cur_interval that's being evaluated as we traverse the other intervals in the array.
@@ -56,7 +56,8 @@ class Solution:
 
         res = []
 
-        intervals.sort(key=lambda interval: (interval[0], interval[1])) # Sort intervals to be in order as they occur.
+        # Sort intervals to be in order as they occur.
+        intervals.sort(key=lambda interval: (interval[0], interval[1]))
         cur_start, cur_end = intervals[0]
 
         # Possible conditions for intervals:
@@ -65,12 +66,12 @@ class Solution:
         #   3) Overlap -> modify cur_interval to represent the new merged interval and move on.
 
         for start, end in intervals[1:]:
-            if cur_end < start: # cur_interval is BEFORE.
+            if cur_end < start:  # cur_interval is BEFORE.
                 res.append([cur_start, cur_end])
                 cur_start, cur_end = start, end
-            elif cur_start > end: # cur_interval is AFTER.
+            elif cur_start > end:  # cur_interval is AFTER.
                 res.append([start, end])
-            else: # Some overlap.
+            else:  # Some overlap.
                 cur_start, cur_end = min(start, cur_start), max(end, cur_end)
         res.append([cur_start, cur_end])
 
@@ -78,8 +79,6 @@ class Solution:
 
 # Time Complexity: O(n * log(n)) -> Sort the intervals array and visit each interval once.
 # Space Complexity: O(1) -> No additional storage used other than res.
-
-
 
 
 # 2nd Solution:
@@ -97,10 +96,11 @@ class Solution:
         cur_start, cur_end = intervals[0]
 
         for start, end in intervals[1:]:
-            if start > cur_end: # If next interval doesn't overlap -> Append current interval and continue.
+            # If next interval doesn't overlap -> Append current interval and continue.
+            if start > cur_end:
                 res.append([cur_start, cur_end])
                 cur_start, cur_end = start, end
-            else: # Some overlap of the intervals, so we need to merge them.
+            else:  # Some overlap of the intervals, so we need to merge them.
                 cur_start = min(cur_start, start)
                 cur_end = max(cur_end, end)
 
@@ -110,3 +110,35 @@ class Solution:
 
 # Time Complexity: O(n + log(n)) -> Sort array of length n, then traverse the array once.
 # Space Complexity: O(1) -> No additional storage space used.
+
+
+# 3rd Solution:
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # Merge all of the overlapping intervals in the array.
+        # First, sort intervals. Make cur_interval the first interval.
+        #   - If the ranges overlap -> merge cur_interval.
+        #   - If no overlap -> don't merge -> append cur_interval and update cur_interval to new_interval.
+
+        intervals.sort()
+        cur_start, cur_end = intervals[0]
+        res = []
+
+        for start, end in intervals[1:]:
+            if cur_end < start:
+                res.append([cur_start, cur_end])
+                cur_start, cur_end = start, end
+            elif cur_start > end:
+                res.append([start, end])
+            else:  # Some overlap, merge these intervals.
+                cur_start = min(start, cur_start)
+                cur_end = max(end, cur_end)
+
+        if [cur_start, cur_end]:
+            res.append([cur_start, cur_end])
+
+        return res
+
+# Time Complexity: O(n * log(n)) -> Sort intervals array, then traverse intervals array one time.
+# Space Complexity: O(1) -> No additional storage used.
