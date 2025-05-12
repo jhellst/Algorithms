@@ -53,3 +53,22 @@ class Solution:
 
 # Time Complexity: O(n) -> In worst case, visit every value in nums one time.
 # Space Complexity: O(n) -> In worst case, store every value in nums in a set.
+
+
+
+# 3rd Solution:
+
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        # Traverse the array from left to right, storing seen values in a set.
+        # If we see a value that is already stored, return True.
+
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+
+# Time Complexity: O(n) -> Traverse every element in array up to 1 time.
+# Space Complexity: O(n) -> Store every element in set (in worst case).
